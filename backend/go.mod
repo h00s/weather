@@ -1,8 +1,11 @@
 module github.com/h00s/weather
 
-go 1.23
+go 1.23.4
 
-require github.com/go-raptor/raptor/v3 v3.1.4
+require (
+	github.com/go-raptor/raptor/v3 v3.1.4
+	github.com/h00s/goopenmeteo v1.0.1
+)
 
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
