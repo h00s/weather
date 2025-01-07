@@ -1,12 +1,2 @@
-<script>
-  import { Alert, Button } from "flowbite-svelte";
-  import { InfoCircleSolid } from "flowbite-svelte-icons";
-  import { fly } from "svelte/transition";
-</script>
-
-<div class="p-8">
-  <Alert color="green" dismissable>
-    <InfoCircleSolid slot="icon" class="w-5 h-5" />
-    Flowbite enabled and ready to use!  
-  </Alert>
-</div>
+<h1>Welcome to SvelteKit</h1>
+<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
