@@ -7,7 +7,7 @@ func Routes() raptor.Routes {
 		raptor.Scope("/api/v1",
 			raptor.Scope("/forecast",
 				// /api/v1/forecast?lat=1.23&lon=4.56
-				raptor.Route("GET", "", "ForecastController", "GetForecast"),
+				raptor.Get("", "Forecast#GetForecast"),
 			),
 		),
 	)
