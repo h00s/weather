@@ -21,7 +21,6 @@ func (fs *ForecastService) GetForecast(latitude, longitude float64) (*goopenmete
 	return fs.OpenMeteo.Forecast(goopenmeteo.ForecastOptions{
 		Latitude:  latitude,
 		Longitude: longitude,
-		Timezone:  "Europe/Berlin",
 		Current: goopenmeteo.WeatherVariables{
 			goopenmeteo.Temperature2M,
 			goopenmeteo.RelativeHumidity2M,
