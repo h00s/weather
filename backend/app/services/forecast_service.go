@@ -25,20 +25,20 @@ func (fs *ForecastService) GetForecast(latitude, longitude float64) (*goopenmete
 		Current: goopenmeteo.WeatherVariables{
 			goopenmeteo.Temperature2M,
 			goopenmeteo.RelativeHumidity2M,
-			goopenmeteo.Rain,
+			goopenmeteo.Precipitation,
 			goopenmeteo.WeatherCode,
 		},
 		ForecastDays: 7,
 		Daily: goopenmeteo.WeatherVariables{
 			goopenmeteo.Temperature2MMax,
 			goopenmeteo.Temperature2MMin,
-			goopenmeteo.RainSum,
+			goopenmeteo.PrecipitationSum,
 		},
 		ForecastHours: 24,
 		Hourly: goopenmeteo.WeatherVariables{
 			goopenmeteo.Temperature2M,
 			goopenmeteo.RelativeHumidity2M,
-			goopenmeteo.Rain,
+			goopenmeteo.Precipitation,
 			goopenmeteo.WeatherCode,
 		},
 	})
