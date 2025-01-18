@@ -1,9 +1,12 @@
-<script>
-  import City from '$comp/weather/City.svelte';
+<script lang="ts">
+  import Weather from '$comp/weather/Weather.svelte';
   import Grid from '$comp/layout/Grid.svelte';
-  // import Card from '$comp/layout/Card.svelte';
+  import type { PageData } from './$types';
+  
+  export let data: PageData;
+  console.log(data);
 </script>
 
 <Grid cols={1}>
-  <City cityName="New York" temperature={24} condition="Partly Cloudy" timestamp="Tuesday, 10:30 AM" />
+  <Weather cityName="Daruvar" temperature={data.forecast.current.data.temperature_2m} condition="Partly Cloudy" timestamp="Tuesday, 10:30 AM" />
 </Grid>
