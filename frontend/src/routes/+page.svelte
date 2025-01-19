@@ -13,5 +13,6 @@
     temperature={data.forecast.current.data.temperature_2m}
     humidity={data.forecast.current.data.relative_humidity_2m}
     precipitation={data.forecast.current.data.precipitation}
+    weatherCode={data.forecast.current.data.weather_code}
   />
 </Grid>
