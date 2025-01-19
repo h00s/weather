@@ -34,14 +34,14 @@
 
 <div class="flex justify-between items-start relative">
   <div>
-    <h2 class="text-2xl font-semibold text-blue-100">{cityName}</h2>
+    <h2 class="text-3xl font-semibold text-white">{cityName}</h2>
     <p class="text-blue-300 text-sm mt-1">{formattedTime}</p>
   </div>
   <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
     <WeatherIcon code={weatherCode} />
   </div>
   <div class="text-right">
-    <div class="text-4xl font-bold text-blue-100">{temperature}°C</div>
+    <div class="text-3xl font-bold text-white">{temperature}°C</div>
     <p class="text-blue-300 text-sm">{humidity}%, {precipitation}mm</p>
   </div>
 </div>
