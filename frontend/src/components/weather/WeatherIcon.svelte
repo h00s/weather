@@ -11,7 +11,7 @@
     CloudHail,
   } from "lucide-svelte";
 
-  const code = $props<number>();
+  const { code } = $props<number>();
   let size: number = 48;
 
   function getWeatherIcon(code: number) {
