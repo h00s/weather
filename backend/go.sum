@@ -8,6 +8,8 @@ github.com/go-raptor/raptor/v3 v3.2.2 h1:X6nnjbOJxms6MlHrram+799HZ/eQKqOwBBaTm1I
 github.com/go-raptor/raptor/v3 v3.2.2/go.mod h1:zqM91aRUKBc0kZx+VQkUqGe8wFAEIVeDYQPDJJq1ciU=
 github.com/go-raptor/raptor/v3 v3.2.3 h1:qK7wzuU8wASXWkz9MT8MAsHN8h4vLvCG95BAF2XAcm0=
 github.com/go-raptor/raptor/v3 v3.2.3/go.mod h1:zqM91aRUKBc0kZx+VQkUqGe8wFAEIVeDYQPDJJq1ciU=
+github.com/go-raptor/raptor/v3 v3.2.4 h1:c+ib8dAMWmg8p2BQ3whtkmVnMn9xxBSekmEOTsL4fW0=
+github.com/go-raptor/raptor/v3 v3.2.4/go.mod h1:zqM91aRUKBc0kZx+VQkUqGe8wFAEIVeDYQPDJJq1ciU=
 github.com/h00s/goopenmeteo v1.0.1 h1:S57hs34Dp+ORaSCQCgzM6W770CuUDHK6HuXAtGNdafs=
 github.com/h00s/goopenmeteo v1.0.1/go.mod h1:TRdUqAhcONaR+ghceOcuQH9doXclhnYVfNAcsOUhhwo=
 github.com/labstack/echo/v4 v4.13.3 h1:pwhpCPrTl5qry5HRdM5FwdXnhXSLSY+WE+YQSeCaafY=

@@ -3,7 +3,7 @@ module github.com/h00s/weather
 go 1.23.5
 
 require (
-	github.com/go-raptor/raptor/v3 v3.2.3
+	github.com/go-raptor/raptor/v3 v3.2.4
 	github.com/h00s/goopenmeteo v1.0.1
 )
 
