@@ -4,6 +4,8 @@ github.com/go-raptor/connector v1.0.0 h1:cXv1/++veq7HUNM3H0mh2FzpEIOaAbOQVDRSFg/
 github.com/go-raptor/connector v1.0.0/go.mod h1:PhsrQUzoy0XBqUXTK7clyBT0ou0gDVMnxH0EpgpHcrI=
 github.com/go-raptor/raptor/v3 v3.3.4 h1:nGpPnTBdvE2OmOQATpYhQhyVuQOuowQq77NU7XL0CeQ=
 github.com/go-raptor/raptor/v3 v3.3.4/go.mod h1:4GaFa15jn7EFFj8lYevrChTAiTyxixLjCHN4UjKqvaA=
+github.com/go-raptor/raptor/v3 v3.3.5 h1:8BORFvsSNoAmLeMDEzxls1RJdxhGUTj9v0wJoSFbEbw=
+github.com/go-raptor/raptor/v3 v3.3.5/go.mod h1:4GaFa15jn7EFFj8lYevrChTAiTyxixLjCHN4UjKqvaA=
 github.com/h00s/goopenmeteo v1.0.1 h1:S57hs34Dp+ORaSCQCgzM6W770CuUDHK6HuXAtGNdafs=
 github.com/h00s/goopenmeteo v1.0.1/go.mod h1:TRdUqAhcONaR+ghceOcuQH9doXclhnYVfNAcsOUhhwo=
 github.com/labstack/echo/v4 v4.13.3 h1:pwhpCPrTl5qry5HRdM5FwdXnhXSLSY+WE+YQSeCaafY=
