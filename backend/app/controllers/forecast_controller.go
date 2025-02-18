@@ -14,7 +14,7 @@ type ForecastController struct {
 	Forecast *services.ForecastService
 }
 
-func (fc *ForecastController) GetForecast(c *raptor.Context) error {
+func (fc *ForecastController) Get(c *raptor.Context) error {
 	lat := c.QueryParam("lat")
 	lon := c.QueryParam("lon")
 

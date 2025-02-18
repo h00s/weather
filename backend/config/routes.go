@@ -1,14 +1,16 @@
 package config
 
-import "github.com/go-raptor/raptor/v3/router"
+import (
+	_ "embed"
+
+	"github.com/go-raptor/raptor/v3/router"
+)
+
+//go:embed routes.yaml
+var routesYAML []byte
 
 func Routes() router.Routes {
 	return router.CollectRoutes(
-		router.Scope("/api/v1",
-			router.Scope("/forecast",
-				// /api/v1/forecast?lat=1.23&lon=4.56
-				router.Get("", "Forecast.GetForecast"),
-			),
-		),
+		router.ParseYAML(routesYAML),
 	)
 }
