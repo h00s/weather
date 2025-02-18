@@ -1,13 +1,13 @@
 package config
 
-import "github.com/go-raptor/raptor/v3"
+import "github.com/go-raptor/raptor/v3/router"
 
-func Routes() raptor.Routes {
-	return raptor.CollectRoutes(
-		raptor.Scope("/api/v1",
-			raptor.Scope("/forecast",
+func Routes() router.Routes {
+	return router.CollectRoutes(
+		router.Scope("/api/v1",
+			router.Scope("/forecast",
 				// /api/v1/forecast?lat=1.23&lon=4.56
-				raptor.Get("", "Forecast#GetForecast"),
+				router.Get("", "Forecast.GetForecast"),
 			),
 		),
 	)
