@@ -3,8 +3,8 @@ package controllers
 import (
 	"strconv"
 
+	"github.com/go-raptor/errs"
 	"github.com/go-raptor/raptor/v3"
-	"github.com/go-raptor/raptor/v3/core"
 	"github.com/h00s/weather/app/services"
 )
 
@@ -19,23 +19,23 @@ func (fc *ForecastController) Get(c *raptor.Context) error {
 	lon := c.QueryParam("lon")
 
 	if lat == "" || lon == "" {
-		return core.NewErrorBadRequest("lat and lon query parameters are required")
+		return c.JSONError(errs.NewErrorBadRequest("lat and lon query parameters are required"))
 	}
 
 	latitude, err := strconv.ParseFloat(lat, 64)
 	if err != nil {
-		return core.NewErrorBadRequest("invalid lat parameter")
+		return c.JSONError(errs.NewErrorBadRequest("invalid lat parameter"))
 	}
 
 	longitude, err := strconv.ParseFloat(lon, 64)
 	if err != nil {
-		return core.NewErrorBadRequest("invalid lon parameter")
+		return c.JSONError(errs.NewErrorBadRequest("invalid lon parameter"))
 	}
 
 	forecast, err := fc.Forecast.GetForecast(latitude, longitude)
 	if err != nil {
-		return core.NewErrorBadRequest(err.Error())
+		return c.JSONError(errs.NewErrorBadRequest(err.Error()))
 	}
 
-	return c.JSON(forecast)
+	return c.JSONResponse(forecast)
 }
