@@ -1,4 +1,4 @@
-import adapter from "@sveltejs/adapter-static";
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -18,10 +18,6 @@ const config = {
 			precompress: false,
 			strict: true
 		}),
-		alias: {
-			$svc: 'src/services',
-			$comp: 'src/components'
-		}
 	}
 };
 
