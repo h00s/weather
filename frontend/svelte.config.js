@@ -18,6 +18,12 @@ const config = {
 			precompress: false,
 			strict: true
 		}),
+		alias: {
+      $svc: 'src/lib/services',
+			$comp: 'src/lib/components',
+			$util: 'src/lib/utils',
+			$type: 'src/lib/types',	
+    }
 	}
 };
 
