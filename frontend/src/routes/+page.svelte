@@ -1,7 +1,7 @@
 <script lang="ts">
   import Container from "$comp/layouts/Container.svelte";
   import WeatherCard from "$comp/app/WeatherCard.svelte";
-  import WeatherHourly from "$comp/app/WeatherHourly.svelte";
+  import HourlyForecast from "$comp/app/HourlyForecast.svelte";
   import type { PageData } from "./$types";
 
   const { data }: { data: PageData } = $props<{ data: PageData }>();
@@ -22,6 +22,6 @@
   </div>
 
   <div class="pt-4">
-    <WeatherHourly hourlyForecast={data.forecast.hourly} />
+    <HourlyForecast hourlyForecast={data.forecast.hourly} />
   </div>
 </Container>
