@@ -1,6 +1,6 @@
 <script lang="ts">
   import Container from "$comp/layouts/Container.svelte";
-  import WeatherCard from "$comp/app/WeatherCard.svelte";
+  import CurrentForecast from "$comp/app/CurrentForecast.svelte";
   import HourlyForecast from "$comp/app/HourlyForecast.svelte";
   import DailyForecast from "$comp/app/DailyForecast.svelte";
   import type { PageData } from "./$types";
@@ -10,7 +10,7 @@
 
 <Container>
   <div class="pt-4">
-    <WeatherCard city="Daruvar" data={data.forecast.current}/>
+    <CurrentForecast city="Daruvar" data={data.forecast.current}/>
   </div>
 
   <div class="pt-4">
