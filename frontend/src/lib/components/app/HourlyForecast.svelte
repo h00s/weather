@@ -11,7 +11,7 @@
     precipitation: number;
   };
 
-  const { hourlyForecast }: {hourlyForecast: HourlyForecast} = $props<{ hourlyForecast: HourlyForecast }>();
+  const { data }: { data: HourlyForecast } = $props<{ data: HourlyForecast }>();
 
   function getWeatherIcon(code: number): string {
     if (code === 0) return '☀️'; // Clear sky
@@ -27,9 +27,9 @@
     return '🌡️'; // Default
   }
 
-  const forecastData = $derived(processWeatherData(hourlyForecast));
+  const forecastData = $derived(processHourlyForecast(data));
 
-  function processWeatherData(data?: HourlyForecast): ProcessedForecast[] {
+  function processHourlyForecast(data?: HourlyForecast): ProcessedForecast[] {
     if (!data || !data.time || !data.data) return [];
     
     const processed: ProcessedForecast[] = [];

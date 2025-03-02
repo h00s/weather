@@ -14,8 +14,9 @@ export interface DailyForecast {
     precipitation_sum: number[];
     temperature_2m_max: number[];
     temperature_2m_min: number[];
+    weather_code: number[];
   };
-} 
+}
 
 export interface Forecast {
   latitude: number;

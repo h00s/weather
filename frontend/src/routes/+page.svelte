@@ -2,6 +2,7 @@
   import Container from "$comp/layouts/Container.svelte";
   import WeatherCard from "$comp/app/WeatherCard.svelte";
   import HourlyForecast from "$comp/app/HourlyForecast.svelte";
+  import DailyForecast from "$comp/app/DailyForecast.svelte";
   import type { PageData } from "./$types";
 
   const { data }: { data: PageData } = $props<{ data: PageData }>();
@@ -22,6 +23,10 @@
   </div>
 
   <div class="pt-4">
-    <HourlyForecast hourlyForecast={data.forecast.hourly} />
+    <HourlyForecast data={data.forecast.hourly} />
+  </div>
+
+  <div class="pt-4">
+    <DailyForecast data={data.forecast.daily} />
   </div>
 </Container>
