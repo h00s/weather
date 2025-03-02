@@ -3,7 +3,7 @@
   import type { WeatherCard } from "$type/WeatherCard";
   import { formatTime } from "$util/datetime";
 
-  const { weather } = $props<{ weather: WeatherCard }>();
+  const { weather }: { weather: WeatherCard } = $props<{ weather: WeatherCard }>();
 
   const formattedTime = $derived(formatTime(weather.timestamp));
 </script>
