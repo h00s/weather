@@ -1,13 +1,5 @@
 <script lang="ts">
-  type WeatherData = {
-    time: string[];
-    data: {
-      precipitation: number[];
-      relative_humidity_2m: number[];
-      temperature_2m: number[];
-      weather_code: number[];
-    };
-  };
+  import type { HourlyForecast } from "$type/Forecast";
 
   type ProcessedForecast = {
     time: string;
@@ -17,7 +9,7 @@
     precipitation: number;
   };
 
-  let { data } = $props<{ data?: WeatherData }>();
+  let { hourlyForecast }: {hourlyForecast: HourlyForecast} = $props<{ hourlyForecast: HourlyForecast }>();
 
   function formatTime(isoString: string): string {
     const date = new Date(isoString);
@@ -51,9 +43,9 @@
     return '🌡️'; // Default
   }
 
-  const forecastData = $derived(processWeatherData(data));
+  const forecastData = $derived(processWeatherData(hourlyForecast));
 
-  function processWeatherData(data?: WeatherData): ProcessedForecast[] {
+  function processWeatherData(data?: HourlyForecast): ProcessedForecast[] {
     if (!data || !data.time || !data.data) return [];
     
     const processed: ProcessedForecast[] = [];

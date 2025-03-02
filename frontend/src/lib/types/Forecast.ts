@@ -1,3 +1,22 @@
+export interface HourlyForecast {
+  time: string[];
+  data: {
+    precipitation: number[];
+    relative_humidity_2m: number[];
+    temperature_2m: number[];
+    weather_code: number[];
+  };
+}
+
+export interface DailyForecast {
+  time: string[];
+  data: {
+    precipitation_sum: number[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+  };
+} 
+
 export interface Forecast {
   latitude: number;
   longitude: number;
@@ -20,21 +39,6 @@ export interface Forecast {
     time: null;
     data: null;
   };
-  hourly: {
-    time: string[];
-    data: {
-      precipitation: number[];
-      relative_humidity_2m: number[];
-      temperature_2m: number[];
-      weather_code: number[];
-    };
-  };
-  daily: {
-    time: string[];
-    data: {
-      precipitation_sum: number[];
-      temperature_2m_max: number[];
-      temperature_2m_min: number[];
-    };
-  };
+  hourly: HourlyForecast;
+  daily: DailyForecast;
 }

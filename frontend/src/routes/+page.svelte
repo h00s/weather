@@ -5,8 +5,6 @@
   import type { PageData } from "./$types";
 
   const { data } = $props<{ data: PageData }>();
-
-  console.log(data);
 </script>
 
 <Container>
@@ -24,6 +22,6 @@
   </div>
 
   <div class="pt-4">
-    <WeatherHourly data={data.forecast.hourly} />
+    <WeatherHourly hourlyForecast={data.forecast.hourly} />
   </div>
 </Container>
