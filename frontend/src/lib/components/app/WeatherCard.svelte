@@ -1,11 +1,17 @@
 <script lang="ts">
   import WeatherIcon from "$comp/app/WeatherIcon.svelte";
   import type { WeatherCard } from "$type/WeatherCard";
-  import { formatTime } from "$util/datetime";
+  import { formatTimeWithWeekday } from "$util/datetime";
+  import { formatTemperature, formatHumidity, formatPrecipitation } from "$util/weather";
 
-  const { weather }: { weather: WeatherCard } = $props<{ weather: WeatherCard }>();
+  const { weather }: { weather: WeatherCard } = $props<{
+    weather: WeatherCard;
+  }>();
 
-  const formattedTime = $derived(formatTime(weather.timestamp));
+  const formattedTime = $derived(formatTimeWithWeekday(weather.timestamp));
+  const temperature: string = $derived(formatTemperature(weather.temperature));
+  const humidity: string = $derived(formatHumidity(weather.humidity));
+  const precipitation: string = $derived(formatPrecipitation(weather.precipitation));
 </script>
 
 <div class="grid grid-cols-3 items-center relative">
@@ -22,9 +28,12 @@
 
   <!-- Right section - Temperature and conditions -->
   <div class="flex flex-col items-end">
-    <div class="text-3xl font-bold text-white">{weather.temperature}°C</div>
+    <div class="text-3xl font-bold text-white">
+      {temperature}
+    </div>
     <p class="text-blue-300 text-sm">
-      {weather.humidity}%, {weather.precipitation}mm
+      {humidity},
+      {precipitation}
     </p>
   </div>
 </div>

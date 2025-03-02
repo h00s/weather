@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { HourlyForecast } from "$type/Forecast";
+  import { formatTime } from "$util/datetime";
+  import { formatTemperature, formatHumidity, formatPrecipitation } from "$util/weather";
 
   type ProcessedForecast = {
     time: string;
@@ -9,25 +11,7 @@
     precipitation: number;
   };
 
-  let { hourlyForecast }: {hourlyForecast: HourlyForecast} = $props<{ hourlyForecast: HourlyForecast }>();
-
-  function formatTime(isoString: string): string {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-  }
-
-  function formatTemp(temp: number): string {
-    return `${Math.round(temp)}°C`;
-  }
-
-  function formatHumidity(humidity: number): string {
-    return `${humidity}%`;
-  }
-
-  function formatPrecipitation(precipitation: number): string {
-    return `${precipitation}mm`;
-  }
-
+  const { hourlyForecast }: {hourlyForecast: HourlyForecast} = $props<{ hourlyForecast: HourlyForecast }>();
 
   function getWeatherIcon(code: number): string {
     if (code === 0) return '☀️'; // Clear sky
@@ -76,7 +60,7 @@
 
 <div>
   {#if forecastData.length > 0}
-    <table class="w-full weather-table">
+    <table class="weather-table">
       <tbody>
         {#each forecastData as forecast}
           <tr>
@@ -84,7 +68,7 @@
             <td>
               <div class="weather-icon">{getWeatherIcon(forecast.weatherCode)}</div>
             </td>
-            <td class="temperature">{formatTemp(forecast.temperature)}</td>
+            <td class="temperature">{formatTemperature(forecast.temperature)}</td>
             <td>{formatHumidity(forecast.humidity)}</td>
             <td>{formatPrecipitation(forecast.precipitation)}</td>
           </tr>
