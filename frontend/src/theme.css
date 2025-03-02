@@ -5,5 +5,11 @@
   --color-blue-500: #61a5c2;
   --color-blue-300: #89c2d9;
   --color-blue-100: #a9d6e5;
+
+  --color-table-header: #012a4a;
+  --color-table-row-odd: #003b61;
+  --color-table-row-even: #01497c;
+  --color-table-text: #ffffff;
+  --color-table-accent: #61a5c2;
 }
 

@@ -1,9 +1,12 @@
 <script lang="ts">
   import Container from "$comp/layouts/Container.svelte";
   import WeatherCard from "$comp/app/WeatherCard.svelte";
+  import WeatherHourly from "$comp/app/WeatherHourly.svelte";
   import type { PageData } from "./$types";
 
   const { data } = $props<{ data: PageData }>();
+
+  console.log(data);
 </script>
 
 <Container>
@@ -18,5 +21,9 @@
         code: data.forecast.current.data.weather_code,
       }}
     />
+  </div>
+
+  <div class="pt-4">
+    <WeatherHourly data={data.forecast.hourly} />
   </div>
 </Container>
