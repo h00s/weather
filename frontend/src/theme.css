@@ -31,9 +31,13 @@
     @apply py-3 px-3;
   }
 
-  .weather-table .temperature {
+  .weather-table .primary {
     @apply font-semibold;
-    color: var(--color-table-accent);
+    color: white;
+  }
+
+  .weather-table .secondary {
+    color: var(--color-blue-300);
   }
 
   .weather-icon {

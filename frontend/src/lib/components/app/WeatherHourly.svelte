@@ -68,9 +68,9 @@
             <td>
               <div class="weather-icon">{getWeatherIcon(forecast.weatherCode)}</div>
             </td>
-            <td class="temperature">{formatTemperature(forecast.temperature)}</td>
-            <td>{formatHumidity(forecast.humidity)}</td>
-            <td>{formatPrecipitation(forecast.precipitation)}</td>
+            <td class="primary">{formatTemperature(forecast.temperature)}</td>
+            <td class="secondary">{formatHumidity(forecast.humidity)}</td>
+            <td class="secondary">{formatPrecipitation(forecast.precipitation)}</td>
           </tr>
         {/each}
       </tbody>
