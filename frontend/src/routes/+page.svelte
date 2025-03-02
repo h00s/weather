@@ -10,16 +10,7 @@
 
 <Container>
   <div class="pt-4">
-    <WeatherCard
-      weather={{
-        city: "Daruvar",
-        timestamp: data.forecast.current.time,
-        temperature: data.forecast.current.data.temperature_2m,
-        humidity: data.forecast.current.data.relative_humidity_2m,
-        precipitation: data.forecast.current.data.precipitation,
-        code: data.forecast.current.data.weather_code,
-      }}
-    />
+    <WeatherCard city="Daruvar" data={data.forecast.current}/>
   </div>
 
   <div class="pt-4">

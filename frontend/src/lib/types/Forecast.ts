@@ -18,6 +18,17 @@ export interface DailyForecast {
   };
 }
 
+export interface CurrentForecast {
+  time: string;
+  interval: number;
+  data: {
+    precipitation: number;
+    relative_humidity_2m: number;
+    temperature_2m: number;
+    weather_code: number;
+  };
+}
+
 export interface Forecast {
   latitude: number;
   longitude: number;
@@ -26,16 +37,7 @@ export interface Forecast {
   timezone: string;
   timezoneAbbreviation: string;
   elevation: number;
-  current: {
-    time: string;
-    interval: number;
-    data: {
-      precipitation: number;
-      relative_humidity_2m: number;
-      temperature_2m: number;
-      weather_code: number;
-    };
-  };
+  current: CurrentForecast;
   minutely15: {
     time: null;
     data: null;
