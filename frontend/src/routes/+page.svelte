@@ -4,7 +4,7 @@
   import WeatherHourly from "$comp/app/WeatherHourly.svelte";
   import type { PageData } from "./$types";
 
-  const { data } = $props<{ data: PageData }>();
+  const { data }: { data: PageData } = $props<{ data: PageData }>();
 </script>
 
 <Container>
