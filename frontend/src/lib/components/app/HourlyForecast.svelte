@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { HourlyForecast } from "$type/Forecast";
   import { formatTime } from "$util/datetime";
-  import { formatTemperature, formatHumidity, formatPrecipitation } from "$util/weather";
+  import { formatTemperature, formatHumidity, formatPrecipitation, weatherIcon } from "$util/weather";
 
   type ProcessedForecast = {
     time: string;
@@ -12,20 +12,6 @@
   };
 
   const { data }: { data: HourlyForecast } = $props<{ data: HourlyForecast }>();
-
-  function getWeatherIcon(code: number): string {
-    if (code === 0) return '☀️'; // Clear sky
-    if (code === 1) return '🌤️'; // Mainly clear
-    if (code === 2) return '⛅'; // Partly cloudy
-    if (code === 3) return '☁️'; // Overcast
-    if (code >= 45 && code <= 48) return '🌫️'; // Fog
-    if (code >= 51 && code <= 55) return '🌧️'; // Drizzle
-    if (code >= 61 && code <= 65) return '🌧️'; // Rain
-    if (code >= 71 && code <= 75) return '❄️'; // Snow
-    if (code >= 80 && code <= 82) return '🌦️'; // Showers
-    if (code >= 95) return '⛈️'; // Thunderstorm
-    return '🌡️'; // Default
-  }
 
   const forecastData = $derived(processHourlyForecast(data));
 
@@ -66,7 +52,7 @@
           <tr>
             <td>{formatTime(forecast.time)}</td>
             <td>
-              <div class="weather-icon">{getWeatherIcon(forecast.weatherCode)}</div>
+              <div class="weather-icon">{weatherIcon(forecast.weatherCode)}</div>
             </td>
             <td class="primary">{formatTemperature(forecast.temperature)}</td>
             <td class="secondary">{formatHumidity(forecast.humidity)}</td>

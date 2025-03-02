@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { DailyForecast } from "$type/Forecast";
-  import { formatTemperature, formatPrecipitation } from "$util/weather";
+  import { formatTemperature, formatPrecipitation, weatherIcon } from "$util/weather";
   import { formatDateWithWeekday } from "$util/datetime";
 
   type ProcessedDailyForecast = {
@@ -12,20 +12,6 @@
   };
 
   const { data }: { data: DailyForecast } = $props<{ data: DailyForecast }>();
-
-  function getWeatherIcon(code: number): string {
-    if (code === 0) return "☀️"; // Clear sky
-    if (code === 1) return "🌤️"; // Mainly clear
-    if (code === 2) return "⛅"; // Partly cloudy
-    if (code === 3) return "☁️"; // Overcast
-    if (code >= 45 && code <= 48) return "🌫️"; // Fog
-    if (code >= 51 && code <= 55) return "🌧️"; // Drizzle
-    if (code >= 61 && code <= 65) return "🌧️"; // Rain
-    if (code >= 71 && code <= 75) return "❄️"; // Snow
-    if (code >= 80 && code <= 82) return "🌦️"; // Showers
-    if (code >= 95) return "⛈️"; // Thunderstorm
-    return "🌡️"; // Default
-  }
 
   const forecastData = $derived(processDailyForecast(data));
 
@@ -61,7 +47,7 @@
             <td>{formatDateWithWeekday(forecast.date)}</td>
             <td>
               <div class="weather-icon">
-                {getWeatherIcon(forecast.weatherCode)}
+                {weatherIcon(forecast.weatherCode)}
               </div>
             </td>
             <td class="primary">

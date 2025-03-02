@@ -1,8 +1,7 @@
 <script lang="ts">
-  import WeatherIcon from "$comp/app/WeatherIcon.svelte";
   import type { WeatherCard } from "$type/WeatherCard";
   import { formatTimeWithWeekday } from "$util/datetime";
-  import { formatTemperature, formatHumidity, formatPrecipitation } from "$util/weather";
+  import { formatTemperature, formatHumidity, formatPrecipitation, weatherIcon } from "$util/weather";
 
   const { weather }: { weather: WeatherCard } = $props<{
     weather: WeatherCard;
@@ -22,8 +21,8 @@
   </div>
 
   <!-- Middle section - Weather icon -->
-  <div class="flex justify-center">
-    <WeatherIcon code={weather.code} />
+  <div class="flex justify-center text-5xl">
+    {weatherIcon(weather.code)}
   </div>
 
   <!-- Right section - Temperature and conditions -->
