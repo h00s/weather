@@ -13,3 +13,30 @@
   --color-table-accent: #61a5c2;
 }
 
+@layer components {
+  .weather-table {
+    @apply w-full border-collapse;
+    color: var(--color-table-text);
+  }
+
+  .weather-table tr:nth-child(odd) td {
+    background-color: var(--color-table-row-odd);
+  }
+
+  .weather-table tr:nth-child(even) td {
+    background-color: var(--color-table-row-even);
+  }
+
+  .weather-table td {
+    @apply py-3 px-3;
+  }
+
+  .weather-table .temperature {
+    @apply font-semibold;
+    color: var(--color-table-accent);
+  }
+
+  .weather-icon {
+    @apply text-2xl;
+  }
+}

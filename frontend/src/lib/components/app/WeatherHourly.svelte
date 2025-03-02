@@ -74,34 +74,6 @@
   }
 </script>
 
-<style>
-  .weather-table {
-    border-collapse: collapse;
-    color: var(--color-table-text);
-  }
-
-  .weather-table tr:nth-child(odd) td {
-    background-color: var(--color-table-row-odd);
-  }
-
-  .weather-table tr:nth-child(even) td {
-    background-color: var(--color-table-row-even);
-  }
-
-  .weather-table td {
-    padding: 0.75rem;
-  }
-
-  .weather-table .temperature {
-    font-weight: 600;
-    color: var(--color-table-accent);
-  }
-
-  .weather-icon {
-    font-size: 1.5rem;
-  }
-</style>
-
 <div>
   {#if forecastData.length > 0}
     <table class="w-full weather-table">
