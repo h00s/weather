@@ -5,8 +5,6 @@
 
   const { weather } = $props<{ weather: WeatherCard }>();
 
-  console.log(weather);
-
   const formattedTime = $derived(formatTime(weather.timestamp));
 </script>
 
