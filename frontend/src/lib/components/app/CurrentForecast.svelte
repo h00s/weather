@@ -3,12 +3,15 @@
   import { formatTimeWithWeekday } from "$util/datetime";
   import { formatTemperature, formatHumidity, formatPrecipitation, weatherIcon } from "$util/weather";
 
-  const { city, data }: { city: string, data: CurrentForecast } = $props<{
+  const { city, data }: {
+    city: string;
+    data: CurrentForecast;
+  } = $props<{
     city: string;
     data: CurrentForecast;
   }>();
 
-  const formattedTime = $derived(formatTimeWithWeekday(data.time));
+  const formattedTime: string = $derived(formatTimeWithWeekday(data.time));
   const temperature: string = $derived(formatTemperature(data.data.temperature_2m));
   const humidity: string = $derived(formatHumidity(data.data.relative_humidity_2m));
   const precipitation: string = $derived(formatPrecipitation(data.data.precipitation));

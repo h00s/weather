@@ -11,7 +11,11 @@
     precipitation: number;
   };
 
-  const { data }: { data: DailyForecast } = $props<{ data: DailyForecast }>();
+  const { data }: { 
+    data: DailyForecast;
+  } = $props<{
+    data: DailyForecast;
+  }>();
 
   const forecastData = $derived(processDailyForecast(data));
 

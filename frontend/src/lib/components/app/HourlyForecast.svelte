@@ -11,7 +11,11 @@
     precipitation: number;
   };
 
-  const { data }: { data: HourlyForecast } = $props<{ data: HourlyForecast }>();
+  const { data }: { 
+    data: HourlyForecast;
+  } = $props<{ 
+    data: HourlyForecast;
+  }>();
 
   const forecastData = $derived(processHourlyForecast(data));
 
