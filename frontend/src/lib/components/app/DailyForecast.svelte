@@ -3,70 +3,33 @@
   import { formatTemperature, formatPrecipitation, weatherIcon } from "$util/weather";
   import { formatDateWithWeekday } from "$util/datetime";
 
-  type ProcessedDailyForecast = {
-    date: string;
-    maxTemperature: number;
-    minTemperature: number;
-    weatherCode: number;
-    precipitation: number;
-  };
-
   const { data }: { 
     data: DailyForecast;
   } = $props<{
     data: DailyForecast;
   }>();
-
-  const forecastData = $derived(processDailyForecast(data));
-
-  function processDailyForecast(
-    data?: DailyForecast,
-  ): ProcessedDailyForecast[] {
-    if (!data || !data.time || !data.data) return [];
-
-    const processed: ProcessedDailyForecast[] = [];
-
-    const displayDays = Math.min(data.time.length, 7);
-
-    for (let i = 0; i < displayDays; i++) {
-      processed.push({
-        date: data.time[i],
-        maxTemperature: data.data.temperature_2m_max[i],
-        minTemperature: data.data.temperature_2m_min[i],
-        weatherCode: data.data.weather_code[i],
-        precipitation: data.data.precipitation_sum[i],
-      });
-    }
-
-    return processed;
-  }
 </script>
 
 <div>
-  {#if forecastData.length > 0}
+  {#if data !== undefined && data.time.length > 0}
     <table class="weather-table">
       <tbody>
-        {#each forecastData as forecast}
+        {#each data.time as _, index}
           <tr>
-            <td>{formatDateWithWeekday(forecast.date)}</td>
+            <td>{formatDateWithWeekday(data.time[index])}</td>
             <td>
               <div class="weather-icon">
-                {weatherIcon(forecast.weatherCode)}
+                {weatherIcon(data.data.weather_code[index])}
               </div>
             </td>
-            <td class="primary">
-              {formatTemperature(forecast.maxTemperature)} / {formatTemperature(
-                forecast.minTemperature,
-              )}
-            </td>
-            <td class="secondary"
-              >{formatPrecipitation(forecast.precipitation)}</td
-            >
+            <td class="primary">{formatTemperature(data.data.temperature_2m_max[index])}</td>
+            <td class="primary">{formatTemperature(data.data.temperature_2m_min[index])}</td>
+            <td class="secondary">{formatPrecipitation(data.data.precipitation_sum[index])}</td>
           </tr>
         {/each}
       </tbody>
     </table>
   {:else}
-    <p>Loading forecast data...</p>
+    <p>Loading weather data...</p>
   {/if}
 </div>
