@@ -1,66 +1,66 @@
 <script lang="ts">
   import type { HourlyForecast } from "$type/Forecast";
   import { formatTime } from "$util/datetime";
-  import { formatTemperature, formatHumidity, formatPrecipitation, weatherIcon } from "$util/weather";
+  import {
+    formatTemperature,
+    formatHumidity,
+    formatPrecipitation,
+    weatherIcon,
+  } from "$util/weather";
 
-  type ProcessedForecast = {
-    time: string;
-    temperature: number;
-    humidity: number;
-    weatherCode: number;
-    precipitation: number;
-  };
-
-  const { data }: { 
+  const {
+    data,
+  }: {
     data: HourlyForecast;
-  } = $props<{ 
+  } = $props<{
     data: HourlyForecast;
   }>();
 
-  const forecastData = $derived(processHourlyForecast(data));
+  const forecast = $derived(processHourlyForecast(data));
 
-  function processHourlyForecast(data?: HourlyForecast): ProcessedForecast[] {
-    if (!data || !data.time || !data.data) return [];
-    
-    const processed: ProcessedForecast[] = [];
-    
+  function processHourlyForecast(data: HourlyForecast): HourlyForecast {
     const now = new Date();
     const currentHour = now.getHours();
-    
-    const startIndex = data.time.findIndex(timeStr => {
+
+    const start = data.time.findIndex((timeStr) => {
       const timeDate = new Date(timeStr);
       return timeDate.getHours() >= currentHour;
     });
-    
-    const effectiveStartIndex = startIndex >= 0 ? startIndex : 0;
-    
-    for (let i = effectiveStartIndex; i < effectiveStartIndex + 12 && i < data.time.length; i++) {
-      processed.push({
-        time: data.time[i],
-        temperature: data.data.temperature_2m[i],
-        humidity: data.data.relative_humidity_2m[i],
-        weatherCode: data.data.weather_code[i],
-        precipitation: data.data.precipitation[i]
-      });
-    }
-    
-    return processed;
+    const end = start + 12;
+
+    return {
+      time: data.time.slice(start, end),
+      data: {
+        precipitation: data.data.precipitation.slice(start, end),
+        relative_humidity_2m: data.data.relative_humidity_2m.slice(start, end),
+        temperature_2m: data.data.temperature_2m.slice(start, end),
+        weather_code: data.data.weather_code.slice(start, end),
+      },
+    };
   }
 </script>
 
 <div>
-  {#if forecastData.length > 0}
+  {#if forecast !== undefined && forecast.time.length > 0}
     <table class="weather-table">
       <tbody>
-        {#each forecastData as forecast}
+        {#each forecast.time as _, index}
           <tr>
-            <td>{formatTime(forecast.time)}</td>
+            <td>{formatTime(forecast.time[index])}</td>
             <td>
-              <div class="weather-icon">{weatherIcon(forecast.weatherCode)}</div>
+              <div class="weather-icon">
+                {weatherIcon(forecast.data.weather_code[index])}
+              </div>
             </td>
-            <td class="primary">{formatTemperature(forecast.temperature)}</td>
-            <td class="secondary">{formatHumidity(forecast.humidity)}</td>
-            <td class="secondary">{formatPrecipitation(forecast.precipitation)}</td>
+            <td class="primary">
+              {formatTemperature(forecast.data.temperature_2m[index])}
+            </td>
+            <td class="secondary">
+              {formatHumidity(forecast.data.relative_humidity_2m[index])}
+            </td>
+            <td class="secondary">
+              {formatPrecipitation(forecast.data.precipitation[index])}
+            </td>
           </tr>
         {/each}
       </tbody>
