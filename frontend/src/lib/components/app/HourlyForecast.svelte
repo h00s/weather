@@ -59,7 +59,7 @@
               {formatHumidity(forecast.data.relative_humidity_2m[index])}
             </td>
             <td class="secondary">
-              {formatPrecipitation(forecast.data.precipitation[index])}
+              {formatPrecipitation(forecast.data.precipitation[index], true)}
             </td>
           </tr>
         {/each}

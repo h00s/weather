@@ -1,12 +1,13 @@
 export function formatTemperature(temp: number): string {
-  return `${temp}°C`;
+  return `${Math.round(temp)}°C`;
 }
 
 export function formatHumidity(humidity: number): string {
   return `${humidity}%`;
 }
 
-export function formatPrecipitation(precipitation: number): string {
+export function formatPrecipitation(precipitation: number, hideIfZero: boolean = false): string {
+  if (hideIfZero && precipitation === 0) return '';
   return `${precipitation}mm`;
 }
 

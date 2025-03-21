@@ -22,9 +22,12 @@
                 {weatherIcon(data.data.weather_code[index])}
               </div>
             </td>
-            <td class="primary">{formatTemperature(data.data.temperature_2m_max[index])}</td>
-            <td class="primary">{formatTemperature(data.data.temperature_2m_min[index])}</td>
-            <td class="secondary">{formatPrecipitation(data.data.precipitation_sum[index])}</td>
+            <td class="primary">
+              {formatTemperature(data.data.temperature_2m_max[index])}
+              /
+              {formatTemperature(data.data.temperature_2m_min[index])}
+            </td>
+            <td class="secondary">{formatPrecipitation(data.data.precipitation_sum[index], true)}</td>
           </tr>
         {/each}
       </tbody>
