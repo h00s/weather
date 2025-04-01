@@ -4,12 +4,12 @@ go 1.24.1
 
 require (
 	github.com/go-raptor/errs v1.0.0
-	github.com/go-raptor/raptor/v3 v3.4.7
+	github.com/go-raptor/raptor/v3 v3.4.10
 	github.com/h00s/goopenmeteo v1.0.1
 )
 
 require (
-	github.com/go-raptor/components v1.0.5 // indirect
+	github.com/go-raptor/components v1.0.7 // indirect
 	github.com/go-raptor/config v1.0.1 // indirect
 	github.com/go-raptor/connector v1.0.1 // indirect
 	github.com/labstack/echo/v4 v4.13.3 // indirect
@@ -20,7 +20,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
