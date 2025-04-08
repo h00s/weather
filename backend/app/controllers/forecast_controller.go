@@ -14,28 +14,28 @@ type ForecastController struct {
 	Forecast *services.ForecastService
 }
 
-func (fc *ForecastController) Get(c *raptor.Context) error {
-	lat := c.QueryParam("lat")
-	lon := c.QueryParam("lon")
+func (fc *ForecastController) Get(s raptor.State) error {
+	lat := s.QueryParam("lat")
+	lon := s.QueryParam("lon")
 
 	if lat == "" || lon == "" {
-		return c.JSONError(errs.NewErrorBadRequest("lat and lon query parameters are required"))
+		return s.JSONError(errs.NewErrorBadRequest("lat and lon query parameters are required"))
 	}
 
 	latitude, err := strconv.ParseFloat(lat, 64)
 	if err != nil {
-		return c.JSONError(errs.NewErrorBadRequest("invalid lat parameter"))
+		return s.JSONError(errs.NewErrorBadRequest("invalid lat parameter"))
 	}
 
 	longitude, err := strconv.ParseFloat(lon, 64)
 	if err != nil {
-		return c.JSONError(errs.NewErrorBadRequest("invalid lon parameter"))
+		return s.JSONError(errs.NewErrorBadRequest("invalid lon parameter"))
 	}
 
 	forecast, err := fc.Forecast.GetForecast(latitude, longitude)
 	if err != nil {
-		return c.JSONError(errs.NewErrorBadRequest(err.Error()))
+		return s.JSONError(errs.NewErrorBadRequest(err.Error()))
 	}
 
-	return c.JSONResponse(forecast)
+	return s.JSONResponse(forecast)
 }
