@@ -1,13 +1,13 @@
 package components
 
 import (
-	"github.com/go-raptor/raptor/v3"
+	"github.com/go-raptor/raptor/v4"
 )
 
 func New(c *raptor.Config) *raptor.Components {
 	return &raptor.Components{
-		Services:    Services(c),
-		Middlewares: Middlewares(),
 		Controllers: Controllers(),
+		Services:    Services(c),
+		Middlewares: Middlewares(c),
 	}
 }

@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/go-raptor/raptor/v3"
+	"github.com/go-raptor/raptor/v4"
 	"github.com/h00s/goopenmeteo"
 )
 
