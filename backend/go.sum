@@ -4,6 +4,8 @@ github.com/go-logistiq/logistiq v1.0.14 h1:ALFf+i7hGbhcTkXPgbO3i+wrzuhlwu1m8rFxP
 github.com/go-logistiq/logistiq v1.0.14/go.mod h1:6T0hgU3H/JeJrjq/E3+Pyw1Q8R2irNyTvdnCxdSd79w=
 github.com/go-raptor/connectors v1.0.2 h1:aAFXlSssExRE0HC6YIj+mSMR2ZP7tZn8qNxRADcekoE=
 github.com/go-raptor/connectors v1.0.2/go.mod h1:o5EsfDhvcxtH00SOh6ehIa2nE/Y2oCrSoorxrSGeEys=
+github.com/go-raptor/controllers/spa v1.0.3 h1:KGQWSW2VjNdvhxLbFd/bg2jMZ0X9uG2PT96hASFshps=
+github.com/go-raptor/controllers/spa v1.0.3/go.mod h1:+SVhJpfRsi2BTI7PN4nNYEvNWrWw/k3i09ozOmuLt5E=
 github.com/go-raptor/middlewares/cors v1.0.1 h1:+0SjfGVwNcI/497ITDQwto9Y2NZFw60b2b+yMLwstLA=
 github.com/go-raptor/middlewares/cors v1.0.1/go.mod h1:SK1fT84M094IbxN4f3j8mTXeZ2K/UT8zHmSbvgL35As=
 github.com/go-raptor/raptor/v4 v4.0.0-alpha.5 h1:kyBLaAr6xODOX0taOexYD3ZeKeo/aJ4Nd6VBvv0Rmek=
