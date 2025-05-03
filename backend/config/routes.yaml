@@ -2,3 +2,6 @@ routes:
   /api/v1:
     /forecast:
       GET: Forecast.Get
+
+  /:
+    GET: SPA.Index
