@@ -8,8 +8,8 @@ github.com/go-raptor/controllers/spa v1.0.3 h1:KGQWSW2VjNdvhxLbFd/bg2jMZ0X9uG2PT
 github.com/go-raptor/controllers/spa v1.0.3/go.mod h1:+SVhJpfRsi2BTI7PN4nNYEvNWrWw/k3i09ozOmuLt5E=
 github.com/go-raptor/middlewares/cors v1.0.1 h1:+0SjfGVwNcI/497ITDQwto9Y2NZFw60b2b+yMLwstLA=
 github.com/go-raptor/middlewares/cors v1.0.1/go.mod h1:SK1fT84M094IbxN4f3j8mTXeZ2K/UT8zHmSbvgL35As=
-github.com/go-raptor/raptor/v4 v4.0.0-alpha.6 h1:Zn6a1RxgemjBh+nkjMrh9Zw7RIMpsyr66eQj6RoYqTs=
-github.com/go-raptor/raptor/v4 v4.0.0-alpha.6/go.mod h1:8c5+zuJy2yb2WAkjvQCa8mXPu8P4WEQRI7s9UpOOaEw=
+github.com/go-raptor/raptor/v4 v4.0.0-alpha.7 h1:Lg4Ss436GY696XOOuhlGQ0i3HbUfLCGYDM89Hm/aK58=
+github.com/go-raptor/raptor/v4 v4.0.0-alpha.7/go.mod h1:8c5+zuJy2yb2WAkjvQCa8mXPu8P4WEQRI7s9UpOOaEw=
 github.com/h00s/goopenmeteo v1.0.1 h1:S57hs34Dp+ORaSCQCgzM6W770CuUDHK6HuXAtGNdafs=
 github.com/h00s/goopenmeteo v1.0.1/go.mod h1:TRdUqAhcONaR+ghceOcuQH9doXclhnYVfNAcsOUhhwo=
 github.com/h00s/tint v1.0.7 h1:EjZPli3Vcs37es8Fqu62dNZhdInD2WUyXu5xYXMnstM=
