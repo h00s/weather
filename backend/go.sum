@@ -6,12 +6,10 @@ github.com/go-raptor/connectors v1.0.2 h1:aAFXlSssExRE0HC6YIj+mSMR2ZP7tZn8qNxRAD
 github.com/go-raptor/connectors v1.0.2/go.mod h1:o5EsfDhvcxtH00SOh6ehIa2nE/Y2oCrSoorxrSGeEys=
 github.com/go-raptor/controllers/spa v1.0.3 h1:KGQWSW2VjNdvhxLbFd/bg2jMZ0X9uG2PT96hASFshps=
 github.com/go-raptor/controllers/spa v1.0.3/go.mod h1:+SVhJpfRsi2BTI7PN4nNYEvNWrWw/k3i09ozOmuLt5E=
-github.com/go-raptor/middlewares/cors v1.0.1 h1:+0SjfGVwNcI/497ITDQwto9Y2NZFw60b2b+yMLwstLA=
-github.com/go-raptor/middlewares/cors v1.0.1/go.mod h1:SK1fT84M094IbxN4f3j8mTXeZ2K/UT8zHmSbvgL35As=
 github.com/go-raptor/middlewares/cors v1.0.2 h1:3G3P8G01V7RGXQKO4uH38z7F7FWVERQ297GlNrRmNXA=
 github.com/go-raptor/middlewares/cors v1.0.2/go.mod h1:flJ00tMK9B5R8JMmfnd/2R+ZnezWskFHNRXwElOL+KA=
-github.com/go-raptor/raptor/v4 v4.0.0-alpha.7 h1:Lg4Ss436GY696XOOuhlGQ0i3HbUfLCGYDM89Hm/aK58=
-github.com/go-raptor/raptor/v4 v4.0.0-alpha.7/go.mod h1:8c5+zuJy2yb2WAkjvQCa8mXPu8P4WEQRI7s9UpOOaEw=
+github.com/go-raptor/middlewares/logger v1.0.0 h1:n06UdBuQsEcdE3ub4tzQh+XubIEVKtq2Hn5VxDBwtCw=
+github.com/go-raptor/middlewares/logger v1.0.0/go.mod h1:Pl+wsruKrfiRhs9tI+fF0etGcEScBkcNmwUH2J9H0P8=
 github.com/go-raptor/raptor/v4 v4.0.0-alpha.14 h1:sSoEyCz+sOHZgzRLrzZd3KA0vwJ+lZuS7nvw5jxLcsg=
 github.com/go-raptor/raptor/v4 v4.0.0-alpha.14/go.mod h1:8c5+zuJy2yb2WAkjvQCa8mXPu8P4WEQRI7s9UpOOaEw=
 github.com/h00s/goopenmeteo v1.0.1 h1:S57hs34Dp+ORaSCQCgzM6W770CuUDHK6HuXAtGNdafs=
@@ -30,12 +28,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
 github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-golang.org/x/crypto v0.37.0 h1:kJNSjF/Xp7kU0iB2Z+9viTPMW4EqqsrywMXLJOOsXSE=
-golang.org/x/crypto v0.37.0/go.mod h1:vg+k43peMZ0pUMhYmVAWysMK35e6ioLh3wB8ZCAfbVc=
 golang.org/x/crypto v0.38.0 h1:jt+WWG8IZlBnVbomuhg2Mdq0+BBQaHbtqHEFEigjUV8=
 golang.org/x/crypto v0.38.0/go.mod h1:MvrbAqul58NNYPKnOra203SB9vpuZW0e+RRZV+Ggqjw=
-golang.org/x/sys v0.32.0 h1:s77OFDvIQeibCmezSnk/q6iAfkdiQaJi4VzroCFrN20=
-golang.org/x/sys v0.32.0/go.mod h1:BJP2sWEmIv4KK5OTEluFJCKSidICx8ciO85XgH3Ak8k=
 golang.org/x/sys v0.33.0 h1:q3i8TbbEz+JRD9ywIRlyRAQbM0qF7hu24q3teo2hbuw=
 golang.org/x/sys v0.33.0/go.mod h1:BJP2sWEmIv4KK5OTEluFJCKSidICx8ciO85XgH3Ak8k=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
