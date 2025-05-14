@@ -4,4 +4,4 @@ routes:
       GET: Forecast.Get
 
   /:
-    GET: SPA.Index
+    ANY: SPA.Index

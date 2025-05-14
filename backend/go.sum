@@ -12,6 +12,8 @@ github.com/go-raptor/middlewares/logger v1.0.0 h1:n06UdBuQsEcdE3ub4tzQh+XubIEVKt
 github.com/go-raptor/middlewares/logger v1.0.0/go.mod h1:Pl+wsruKrfiRhs9tI+fF0etGcEScBkcNmwUH2J9H0P8=
 github.com/go-raptor/raptor/v4 v4.0.0-alpha.14 h1:sSoEyCz+sOHZgzRLrzZd3KA0vwJ+lZuS7nvw5jxLcsg=
 github.com/go-raptor/raptor/v4 v4.0.0-alpha.14/go.mod h1:8c5+zuJy2yb2WAkjvQCa8mXPu8P4WEQRI7s9UpOOaEw=
+github.com/go-raptor/raptor/v4 v4.0.0-alpha.20 h1:EZl4Vrqr04JYnuz1nWchtGZN4t2LYFpDpL/vEFOxcqo=
+github.com/go-raptor/raptor/v4 v4.0.0-alpha.20/go.mod h1:8c5+zuJy2yb2WAkjvQCa8mXPu8P4WEQRI7s9UpOOaEw=
 github.com/h00s/goopenmeteo v1.0.1 h1:S57hs34Dp+ORaSCQCgzM6W770CuUDHK6HuXAtGNdafs=
 github.com/h00s/goopenmeteo v1.0.1/go.mod h1:TRdUqAhcONaR+ghceOcuQH9doXclhnYVfNAcsOUhhwo=
 github.com/h00s/tint v1.0.7 h1:EjZPli3Vcs37es8Fqu62dNZhdInD2WUyXu5xYXMnstM=
