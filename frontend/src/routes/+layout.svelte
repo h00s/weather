@@ -3,4 +3,6 @@
   import "../app.css";
 </script>
 
-{@render children()}
+<div class="weather-bg min-h-screen">
+  {@render children()}
+</div>

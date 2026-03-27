@@ -9,15 +9,9 @@
 </script>
 
 <Container>
-  <div class="pt-4">
-    <CurrentForecast city="Daruvar" data={data.forecast.current}/>
-  </div>
-
-  <div class="pt-4">
-    <HourlyForecast data={data.forecast.hourly} />
-  </div>
-
-  <div class="pt-4">
-    <DailyForecast data={data.forecast.daily} />
-  </div>
+  <CurrentForecast city="Daruvar" data={data.forecast.current} />
+  <div class="border-t border-white/10 my-5"></div>
+  <HourlyForecast data={data.forecast.hourly} />
+  <div class="border-t border-white/10 my-5"></div>
+  <DailyForecast data={data.forecast.daily} />
 </Container>

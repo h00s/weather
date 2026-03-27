@@ -4,7 +4,6 @@
   import {
     formatTemperature,
     formatHumidity,
-    formatPrecipitation,
     weatherIcon,
   } from "$util/weather";
 
@@ -40,32 +39,18 @@
   }
 </script>
 
-<div>
-  {#if forecast !== undefined && forecast.time.length > 0}
-    <table class="weather-table">
-      <tbody>
-        {#each forecast.time as _, index}
-          <tr>
-            <td>{formatTime(forecast.time[index])}</td>
-            <td>
-              <div class="weather-icon">
-                {weatherIcon(forecast.data.weather_code[index])}
-              </div>
-            </td>
-            <td class="primary">
-              {formatTemperature(forecast.data.temperature_2m[index])}
-            </td>
-            <td class="secondary">
-              {formatHumidity(forecast.data.relative_humidity_2m[index])}
-            </td>
-            <td class="secondary">
-              {formatPrecipitation(forecast.data.precipitation[index], true)}
-            </td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  {:else}
-    <p>Loading weather data...</p>
-  {/if}
-</div>
+{#if forecast !== undefined && forecast.time.length > 0}
+  <div>
+    <p class="text-blue-300/60 text-xs uppercase tracking-widest mb-3 md:mb-4">Next 12 hours</p>
+    <div class="flex gap-2 overflow-x-auto scrollbar-hidden pb-1">
+      {#each forecast.time as _, index}
+        <div class="hour-card flex flex-col items-center min-w-[68px] md:min-w-20 py-3 md:py-4 px-2 md:px-3">
+          <span class="text-blue-300/70 text-xs md:text-sm">{formatTime(forecast.time[index])}</span>
+          <span class="text-2xl md:text-3xl my-2 leading-none">{weatherIcon(forecast.data.weather_code[index])}</span>
+          <span class="text-white text-sm md:text-base font-medium">{formatTemperature(forecast.data.temperature_2m[index])}</span>
+          <span class="text-blue-300/60 text-xs md:text-sm mt-1">{formatHumidity(forecast.data.relative_humidity_2m[index])}</span>
+        </div>
+      {/each}
+    </div>
+  </div>
+{/if}

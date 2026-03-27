@@ -5,42 +5,38 @@
   --color-blue-500: #61a5c2;
   --color-blue-300: #89c2d9;
   --color-blue-100: #a9d6e5;
-
-  --color-table-header: #012a4a;
-  --color-table-row-odd: #003b61;
-  --color-table-row-even: #01497c;
-  --color-table-text: #ffffff;
-  --color-table-accent: #61a5c2;
 }
 
 @layer components {
-  .weather-table {
-    @apply w-full border-collapse;
-    color: var(--color-table-text);
+  .weather-bg {
+    background: linear-gradient(160deg, #012a4a 0%, #01497c 55%, #2c7da0 100%);
   }
 
-  .weather-table tr:nth-child(odd) td {
-    background-color: var(--color-table-row-odd);
+  .glass-card {
+    background: rgba(1, 42, 74, 0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(137, 194, 217, 0.12);
+    border-radius: 1.5rem;
   }
 
-  .weather-table tr:nth-child(even) td {
-    background-color: var(--color-table-row-even);
+  .hour-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(137, 194, 217, 0.08);
+    border-radius: 0.875rem;
+    transition: background 0.15s ease;
   }
 
-  .weather-table td {
-    @apply py-3 px-3;
+  .hour-card:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
 
-  .weather-table .primary {
-    @apply font-semibold;
-    color: white;
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
-  .weather-table .secondary {
-    color: var(--color-blue-300);
-  }
-
-  .weather-icon {
-    @apply text-2xl;
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
   }
 }

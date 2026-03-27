@@ -17,26 +17,21 @@
   const precipitation: string = $derived(formatPrecipitation(data.data.precipitation));
 </script>
 
-<div class="grid grid-cols-3 items-center relative">
-  <!-- Left section - City and time -->
-  <div class="flex flex-col">
-    <h2 class="text-3xl font-semibold text-white">{city}</h2>
-    <p class="text-blue-300 text-sm mt-1">{formattedTime}</p>
-  </div>
+<div class="flex flex-col items-center text-center py-2 md:py-6">
+  <p class="text-blue-300 text-xs md:text-sm uppercase tracking-widest font-medium">{city}</p>
+  <p class="text-blue-300/60 text-xs md:text-sm mt-1">{formattedTime}</p>
 
-  <!-- Middle section - Weather icon -->
-  <div class="flex justify-center text-5xl">
+  <div class="text-7xl md:text-8xl lg:text-9xl my-5 md:my-7 leading-none">
     {weatherIcon(data.data.weather_code)}
   </div>
 
-  <!-- Right section - Temperature and conditions -->
-  <div class="flex flex-col items-end">
-    <div class="text-3xl font-bold text-white">
-      {temperature}
-    </div>
-    <p class="text-blue-300 text-sm">
-      {humidity},
-      {precipitation}
-    </p>
+  <div class="text-6xl md:text-7xl lg:text-8xl font-thin text-white tracking-tight">
+    {temperature}
+  </div>
+
+  <div class="flex items-center gap-3 mt-4 md:mt-6 text-sm md:text-base text-blue-300/80">
+    <span>{humidity}</span>
+    <span class="text-blue-300/30">·</span>
+    <span>{precipitation}</span>
   </div>
 </div>
