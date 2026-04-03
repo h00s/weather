@@ -11,10 +11,9 @@ type ForecastService struct {
 	OpenMeteo *goopenmeteo.OpenMeteo
 }
 
-func NewForecastService() *ForecastService {
-	return &ForecastService{
-		OpenMeteo: goopenmeteo.NewOpenMeteo(),
-	}
+func (fs *ForecastService) Setup() error {
+	fs.OpenMeteo = goopenmeteo.NewOpenMeteo()
+	return nil
 }
 
 func (fs *ForecastService) GetForecast(latitude, longitude float64) (*goopenmeteo.Forecast, error) {
