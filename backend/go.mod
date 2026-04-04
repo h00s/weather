@@ -7,13 +7,13 @@ go 1.26
 require (
 	github.com/go-raptor/controllers/spa v1.0.4
 	github.com/go-raptor/middlewares/cors v1.0.6
-	github.com/go-raptor/middlewares/logger v1.0.2
-	github.com/go-raptor/raptor/v4 v4.1.12
+	github.com/go-raptor/middlewares/logger v1.0.4
+	github.com/go-raptor/raptor/v4 v4.1.16
 	github.com/h00s/goopenmeteo v1.0.1
 	github.com/lmittmann/tint v1.1.3
 )
 
 require (
-	github.com/go-raptor/connectors v1.0.2 // indirect
+	github.com/go-raptor/connectors v1.0.4 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
