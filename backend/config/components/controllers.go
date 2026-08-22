@@ -11,6 +11,7 @@ func Controllers() raptor.Controllers {
 		&controllers.ForecastController{},
 		spa.NewSPAController(spa.SPAConfig{
 			Directory: "public",
+			Optional:  true,
 		}),
 	}
 }

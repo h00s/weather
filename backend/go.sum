@@ -4,12 +4,16 @@ github.com/go-raptor/connectors v1.1.0 h1:U6Fjhv68q7gIoFEAIKZGd5TtKygmZI8tG5TJt6
 github.com/go-raptor/connectors v1.1.0/go.mod h1:A7T++oNId2F9SB5i9IQcm+3QzruL5s1nFLfRk1eA0SU=
 github.com/go-raptor/controllers/spa/v2 v2.0.0 h1:5l+DBFkqLZ4vwcKJy60Rij4Hvf2YDurGS1IiOyNp+l0=
 github.com/go-raptor/controllers/spa/v2 v2.0.0/go.mod h1:y9jEBC4NtJqxtvPDHes/aIb7JdtALR+rBDEUPf2/hro=
+github.com/go-raptor/controllers/spa/v2 v2.0.1 h1:3xUscSMSJMdHF2AH18sAkPPhEC805jmTHy/r+HdhaQw=
+github.com/go-raptor/controllers/spa/v2 v2.0.1/go.mod h1:GrhgN5uef1BiPEGyKQxJSOeUO8dAaJ3pRhkRbK6pzPo=
 github.com/go-raptor/middlewares/cors v1.0.10 h1:vCnl8x3ShKAo/c1LfxT8djPZO1Wq/VvPwqQzYHOia9I=
 github.com/go-raptor/middlewares/cors v1.0.10/go.mod h1:2gcl4Me3js2+jDO99eIljZYsGAvi74DPQ2+e05QMT7M=
 github.com/go-raptor/middlewares/logger v1.0.7 h1:EJT1Kg8xT2yZQEvBmS7FvmyZGnty+ljE9dzy9+tMRWo=
 github.com/go-raptor/middlewares/logger v1.0.7/go.mod h1:EmsMioF0OjbcNOJwK/YLCjogpHgMII4ZgnRnMMbT3ZI=
 github.com/go-raptor/raptor/v4 v4.3.1 h1:9hD1v91KrSwhDo/e9zHEEjq6Wa8RCaCttEC00frLzwI=
 github.com/go-raptor/raptor/v4 v4.3.1/go.mod h1:llA2fmqRtCOJ60AgzdmSJUwm4UhHVfdLIrm/e/H/oD0=
+github.com/go-raptor/raptor/v4 v4.3.2 h1:eQWQxv8ssXYLWZcQsdKxJEpajoTcbO3h3fikrVwX92s=
+github.com/go-raptor/raptor/v4 v4.3.2/go.mod h1:QBCZFYuM0SHuBfoaAmAbbnF6uLUHPTJA8gvnGl/7Jp0=
 github.com/h00s/goopenmeteo v1.0.1 h1:S57hs34Dp+ORaSCQCgzM6W770CuUDHK6HuXAtGNdafs=
 github.com/h00s/goopenmeteo v1.0.1/go.mod h1:TRdUqAhcONaR+ghceOcuQH9doXclhnYVfNAcsOUhhwo=
 github.com/lmittmann/tint v1.2.0 h1:AogHRHy8HUJUnNJBHJlYa+fR4YY8mko2cnCp67xn9JY=
