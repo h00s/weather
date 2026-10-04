@@ -25,6 +25,6 @@ func Middlewares() raptor.Middlewares {
 		raptor.Use(&csrf.CSRFMiddleware{}),
 		// A cache miss calls Open-Meteo, Meteoalarm or GeoNames: 20 requests a second
 		// per client IP keeps one client from draining the upstream quotas.
-		raptor.UseOnly(limiter.NewRateLimiterMiddleware(limiter.RateLimiterConfig{}), "Forecast"),
+		raptor.UseOnly(limiter.NewRateLimiterMiddleware(limiter.RateLimiterConfig{}), "Forecast", "Places"),
 	}
 }

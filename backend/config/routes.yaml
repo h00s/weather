@@ -6,6 +6,9 @@ routes:
   /api/v1:
     /forecast:
       GET: Forecast.Show        # ?lat&lon: now, hourly to the end of the week, 7 days
+    /places:
+      /nearest:
+        GET: Places.Nearest     # ?lat&lon: the Croatian settlement at a point (404 abroad)
     /{path...}: Errors.NotFound # unknown API paths answer a JSON 404, not the SPA's empty one
 
   /: SPA.Index                  # catch-all for the frontend
