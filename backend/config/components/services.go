@@ -10,5 +10,6 @@ func Services() raptor.Services {
 		&services.ForecastService{},
 		&services.PlacesService{},
 		&services.WarningsService{},
+		&services.AirQualityService{},
 	}
 }

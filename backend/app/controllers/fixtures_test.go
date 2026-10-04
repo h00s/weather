@@ -16,6 +16,8 @@ func canned(path string, now time.Time) (body []byte, ok bool) {
 		return []byte(searchJSON), true
 	case "/api/v1/warnings/feeds-croatia":
 		return meteoalarmJSON(now), true
+	case "/air-quality":
+		return airQualityJSON(now), true
 	}
 	return nil, false
 }
@@ -90,5 +92,32 @@ func meteoalarmJSON(now time.Time) []byte {
 		warning("here", "Bjelovarsko-bilogorska", "2; yellow; Moderate"),
 		warning("coast", "Zadarska", "3; orange; Severe"),
 	}})
+	return body
+}
+
+// airQualityJSON is an Open-Meteo air quality answer for today: moderate AQI and
+// a ragweed peak of 23.5 grains/m³ in the afternoon.
+func airQualityJSON(now time.Time) []byte {
+	zagreb, _ := time.LoadLocation("Europe/Zagreb")
+	now = now.In(zagreb)
+	_, offset := now.Zone()
+	midnight := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, zagreb)
+	var times []string
+	ragweed := make([]float64, 24)
+	for i := range 24 {
+		times = append(times, midnight.Add(time.Duration(i)*time.Hour).Format("2006-01-02T15:04"))
+	}
+	ragweed[15] = 23.5
+
+	body, _ := json.Marshal(map[string]any{
+		"utc_offset_seconds":    offset,
+		"timezone":              "Europe/Zagreb",
+		"timezone_abbreviation": fmt.Sprintf("GMT+%d", offset/3600),
+		"current": map[string]any{
+			"time": now.Truncate(time.Hour).Format("2006-01-02T15:04"), "interval": 3600,
+			"european_aqi": 43, "ragweed_pollen": 3.2, "birch_pollen": nil,
+		},
+		"hourly": map[string]any{"time": times, "ragweed_pollen": ragweed},
+	})
 	return body
 }

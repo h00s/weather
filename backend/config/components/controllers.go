@@ -11,6 +11,7 @@ func Controllers() raptor.Controllers {
 		&controllers.ForecastController{},
 		&controllers.PlacesController{},
 		&controllers.WarningsController{},
+		&controllers.AirQualityController{},
 		&spa.SPAController{}, // serves public/; spa_optional in .raptor.dev.yaml and .raptor.test.yaml
 	}
 }
