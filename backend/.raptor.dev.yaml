@@ -1,0 +1,10 @@
+# Local development only. Production is configured by environment variables (see the Dockerfile).
+general:
+  log_level: debug
+
+server:
+  address: "127.0.0.1"
+  port: 3000
+
+app:
+  spa_optional: "true" # the API boots before the frontend is built; Vite serves it in dev

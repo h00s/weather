@@ -1,7 +1,11 @@
 routes:
+  /healthz:
+    GET: Health.Live            # built in: the process serves requests
+  /readyz:
+    GET: Health.Ready           # built in: 503 from the moment shutdown begins
   /api/v1:
     /forecast:
       GET: Forecast.Get
+    /{path...}: Errors.NotFound # unknown API paths answer a JSON 404, not the SPA's empty one
 
-  /:
-    ANY: SPA.Index
+  /: SPA.Index                  # catch-all for the frontend

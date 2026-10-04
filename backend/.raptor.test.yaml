@@ -1,0 +1,4 @@
+# Loaded by raptor.NewTestApp together with .raptor.yaml (if any). Tests point
+# every upstream at httptest stubs via raptor.WithConfig.
+app:
+  spa_optional: "true" # tests have no frontend build

@@ -9,9 +9,6 @@ import (
 func Controllers() raptor.Controllers {
 	return raptor.Controllers{
 		&controllers.ForecastController{},
-		spa.NewSPAController(spa.SPAConfig{
-			Directory: "public",
-			Optional:  true,
-		}),
+		&spa.SPAController{}, // serves public/; spa_optional in .raptor.dev.yaml and .raptor.test.yaml
 	}
 }
