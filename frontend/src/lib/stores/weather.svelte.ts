@@ -16,6 +16,9 @@ const CACHE_KEY = "vrijeme.forecast";
 const POLL_MS = 15 * 60_000;
 /** Coming back to the page after this long refreshes at once instead of at the next poll. */
 const STALE_MS = 10 * 60_000;
+/** A forecast the backend fetched longer ago than this is shown as stale: it is serving its last
+ *  good copy while Open-Meteo is down. */
+const OLD_DATA_MS = 30 * 60_000;
 
 function createWeatherStore() {
   let at = $state<Coordinates | null>(null);
@@ -29,54 +32,71 @@ function createWeatherStore() {
   let controller: AbortController | null = null;
   let timer: ReturnType<typeof setTimeout> | null = null;
   let consumers = 0;
+  /** When the last refresh started. Polls are timed from it, not from the data's age, which an
+   *  outage keeps old. */
+  let lastAttempt = 0;
 
-  const age = () => {
-    const since = untrack(() => updatedAt);
-    return since ? Date.now() - since.getTime() : Infinity;
-  };
-
-  /** The next poll, POLL_MS after the last update; none while hidden or unwatched. */
+  /** The next poll, POLL_MS after the last refresh; none while hidden or unwatched. */
   function schedule() {
     if (timer !== null) clearTimeout(timer);
     timer = null;
     if (consumers === 0 || document.visibilityState === "hidden") return;
-    timer = setTimeout(() => void refresh(), Math.max(0, POLL_MS - age()));
+    timer = setTimeout(() => void refresh(), Math.max(0, lastAttempt + POLL_MS - Date.now()));
   }
 
-  /** Fetches forecast, air quality and warnings for the current cell in parallel. Each lands on its
-   *  own, so a Meteoalarm outage never blanks the forecast. A newer refresh, a location change or
-   *  the last consumer leaving aborts this one, and its results are dropped. */
+  /** Fetches forecast, air quality and warnings for the current cell in parallel. Each lands as
+   *  soon as it arrives, so a slow or failing Meteoalarm never holds back or blanks the forecast. A
+   *  newer refresh, a location change or the last consumer leaving aborts this one, and its late
+   *  results are dropped. */
   async function refresh(): Promise<void> {
     const target = untrack(() => at);
     if (!target) return;
     controller?.abort();
     const mine = (controller = new AbortController());
+    const current = () => controller === mine;
+    lastAttempt = Date.now();
     loading = true;
 
-    const [f, a, w] = await Promise.allSettled([
-      fetchForecast(target, mine.signal),
-      fetchAirQuality(target, mine.signal),
-      fetchWarnings(target, mine.signal),
-    ]);
-    if (controller !== mine) return; // superseded: a newer refresh owns the state now
-    controller = null;
-    loading = false;
+    const forecastLanded = fetchForecast(target, mine.signal)
+      .then(
+        (f) => {
+          if (!current()) return;
+          forecast = f;
+          updatedAt = new Date(f.fetchedAt);
+          error = null;
+          save(CACHE_KEY, {
+            version: CACHE_VERSION,
+            cell: cellKey(target),
+            savedAt: new Date().toISOString(),
+            forecast: f,
+          } satisfies CachedForecast);
+        },
+        (e: unknown) => {
+          if (current() && !isAbortError(e)) error = e;
+        },
+      )
+      .finally(() => {
+        if (current()) loading = false;
+      });
+    // A failure here leaves the card or banner out; the forecast stands on its own.
+    const othersLanded = [
+      fetchAirQuality(target, mine.signal).then(
+        (a) => {
+          if (current()) airQuality = a;
+        },
+        () => {},
+      ),
+      fetchWarnings(target, mine.signal).then(
+        (w) => {
+          if (current()) warnings = w;
+        },
+        () => {},
+      ),
+    ];
 
-    if (f.status === "fulfilled") {
-      forecast = f.value;
-      updatedAt = new Date();
-      error = null;
-      save(CACHE_KEY, {
-        version: CACHE_VERSION,
-        cell: cellKey(target),
-        savedAt: updatedAt.toISOString(),
-        forecast: f.value,
-      } satisfies CachedForecast);
-    } else if (!isAbortError(f.reason)) {
-      error = f.reason;
-    }
-    if (a.status === "fulfilled") airQuality = a.value;
-    if (w.status === "fulfilled") warnings = w.value;
+    await Promise.allSettled([forecastLanded, ...othersLanded]);
+    if (!current()) return;
+    controller = null;
     schedule();
   }
 
@@ -89,7 +109,7 @@ function createWeatherStore() {
       at = { latitude: location.latitude, longitude: location.longitude };
       const cached = usableCache(load(CACHE_KEY, isCachedForecast), cell, new Date());
       forecast = cached?.forecast;
-      updatedAt = cached ? new Date(cached.savedAt) : null;
+      updatedAt = cached ? new Date(cached.forecast.fetchedAt) : null;
       airQuality = undefined;
       warnings = undefined;
       error = null;
@@ -98,7 +118,7 @@ function createWeatherStore() {
   }
 
   function onVisibility() {
-    if (document.visibilityState === "visible" && age() > STALE_MS) void refresh();
+    if (document.visibilityState === "visible" && Date.now() - lastAttempt > STALE_MS) void refresh();
     else schedule();
   }
 
@@ -116,7 +136,7 @@ function createWeatherStore() {
     get warnings() {
       return warnings;
     },
-    /** When the forecast shown was fetched; a cached one keeps its own time. */
+    /** When the backend fetched the forecast shown from Open-Meteo. */
     get updatedAt() {
       return updatedAt;
     },
@@ -127,9 +147,11 @@ function createWeatherStore() {
     get loading() {
       return loading;
     },
-    /** There is a forecast, but the last refresh failed: what's shown may be out of date. */
+    /** There is a forecast, but it may be out of date: the last refresh failed, or the backend
+     *  could only serve an old copy. Not while a refresh is under way. */
     get stale() {
-      return forecast !== undefined && error !== null;
+      if (forecast === undefined || loading) return false;
+      return error !== null || (updatedAt !== null && Date.now() - updatedAt.getTime() > OLD_DATA_MS);
     },
     show,
     refresh,
