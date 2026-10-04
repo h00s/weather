@@ -17,3 +17,7 @@ export function warningWhen(w: Warning, now: Date, timeZone: string): string {
   const [day, hour] = when(w.onset, now, timeZone);
   return day ? `${day} od ${hour}` : `od ${hour}`;
 }
+
+/** A key for one warning in a list: every field the backend dedupes on, since two warnings may
+ *  share an event and onset. */
+export const warningKey = (w: Warning) => [w.level, w.type, w.event, w.description, w.onset, w.expires].join("|");

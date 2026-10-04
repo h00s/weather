@@ -1,6 +1,6 @@
 <script lang="ts">
   import TriangleAlert from "@lucide/svelte/icons/triangle-alert";
-  import { warningWhen } from "$lib/helpers/alerts";
+  import { warningKey, warningWhen } from "$lib/helpers/alerts";
   import type { Warning } from "$lib/types/warning";
 
   type Props = { warnings: Warning[]; now: Date; timeZone: string };
@@ -11,7 +11,7 @@
 </script>
 
 <section aria-label="Upozorenja DHMZ-a" class="flex flex-col gap-2">
-  {#each warnings as w (`${w.event}|${w.onset}`)}
+  {#each warnings as w (warningKey(w))}
     <details class="rounded-2xl {fill[w.level]}">
       <summary class="flex cursor-pointer list-none items-center gap-3 px-4 py-2.5 font-medium [&::-webkit-details-marker]:hidden">
         <TriangleAlert class="size-5 shrink-0" aria-hidden="true" />
