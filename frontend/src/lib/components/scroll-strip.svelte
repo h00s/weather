@@ -41,7 +41,7 @@
 
 <!-- No scrollbar: the faded edge says there is more. A touch screen swipes, a trackpad or the arrow
      keys scroll, and with a mouse the round buttons page through. -->
-<div class={["relative", className]}>
+<div class={["strip relative", className]}>
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div
     bind:this={viewport}
@@ -56,13 +56,13 @@
     {@render children()}
   </div>
   {#if edges.start}
-    <button type="button" tabindex="-1" aria-hidden="true" onclick={() => page(-1)} class="strip-arrow left-1">
-      <ChevronLeft class="size-5" />
+    <button type="button" tabindex="-1" aria-hidden="true" onclick={() => page(-1)} class="strip-arrow left-3">
+      <ChevronLeft class="size-4" />
     </button>
   {/if}
   {#if edges.end}
-    <button type="button" tabindex="-1" aria-hidden="true" onclick={() => page(1)} class="strip-arrow right-1">
-      <ChevronRight class="size-5" />
+    <button type="button" tabindex="-1" aria-hidden="true" onclick={() => page(1)} class="strip-arrow right-3">
+      <ChevronRight class="size-4" />
     </button>
   {/if}
 </div>
@@ -72,6 +72,7 @@
   .strip-arrow {
     display: none;
   }
+  /* Frosted glass like the card, quiet until the strip is hovered: a hint, not a call to action. */
   @media (hover: hover) and (pointer: fine) {
     .strip-arrow {
       position: absolute;
@@ -79,21 +80,25 @@
       translate: 0 -50%;
       display: grid;
       place-items: center;
-      width: 2.25rem;
-      height: 2.25rem;
+      width: 2rem;
+      height: 2rem;
       border-radius: 9999px;
-      color: var(--color-foreground);
-      background-color: oklch(0.25 0.06 248 / 85%);
-      box-shadow:
-        inset 0 0 0 1px oklch(1 0 0 / 18%),
-        0 4px 14px oklch(0 0 0 / 30%);
-      -webkit-backdrop-filter: blur(6px);
-      backdrop-filter: blur(6px);
+      color: oklch(1 0 0 / 90%);
+      background-color: oklch(1 0 0 / 12%);
+      box-shadow: inset 0 0 0 1px oklch(1 0 0 / 22%);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      opacity: 0.7;
       cursor: pointer;
-      transition: background-color 150ms;
+      transition:
+        opacity 150ms,
+        background-color 150ms;
+    }
+    .strip:hover .strip-arrow {
+      opacity: 1;
     }
     .strip-arrow:hover {
-      background-color: oklch(0.32 0.07 248 / 95%);
+      background-color: oklch(1 0 0 / 22%);
     }
   }
 </style>
