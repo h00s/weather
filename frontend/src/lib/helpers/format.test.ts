@@ -10,6 +10,7 @@ import {
   formatMillimetres,
   formatPercent,
   formatPressure,
+  formatShortDate,
   formatSpeed,
   isoDateOf,
   minutesOfDay,
@@ -35,6 +36,11 @@ describe("times on the location's clock", () => {
     expect(dayLabel("2026-09-30", d, tz)).toBe("Sutra");
     expect(dayLabel("2026-10-01", d, tz)).toBe("Čet 1. 10.");
     expect(dayLabel("2026-10-04", d, tz)).toBe("Ned 4. 10.");
+  });
+
+  it("writes a short date without zero padding", () => {
+    expect(formatShortDate("2026-10-04")).toBe("4. 10.");
+    expect(formatShortDate("2026-12-31")).toBe("31. 12.");
   });
 });
 

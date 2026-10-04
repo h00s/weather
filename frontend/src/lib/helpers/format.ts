@@ -39,8 +39,13 @@ export function dayLabel(date: string, now: Date, timeZone: string): string {
   const weekday = dateFormat("hr-HR", { weekday: "short", timeZone: "UTC" })
     .format(new Date(`${date}T12:00:00Z`))
     .replace(".", "");
-  const [, month, day] = date.split("-").map(Number); // Intl pads them: "01. 10."
-  return `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)} ${day}. ${month}.`;
+  return `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)} ${formatShortDate(date)}`;
+}
+
+/** "4. 10." for a YYYY-MM-DD date. */
+export function formatShortDate(date: string): string {
+  const [, month, day] = date.split("-").map(Number); // Intl pads them: "04. 10."
+  return `${day}. ${month}.`;
 }
 
 /** 17°, rounded; never "-0°"; a dash when missing. */

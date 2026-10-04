@@ -1,0 +1,44 @@
+<script lang="ts">
+  import { formatDegrees, formatHour, formatPercent } from "$lib/helpers/format";
+  import { weatherInfo } from "$lib/helpers/weather";
+  import type { DailyForecast, HourlyForecast } from "$lib/types/forecast";
+  import HourlyChart, { type SunEvent } from "./hourly-chart.svelte";
+
+  type Props = { hours: HourlyForecast[]; days: DailyForecast[]; timeZone: string };
+  let { hours, days, timeZone }: Props = $props();
+
+  const sunEvents = $derived(
+    days
+      .flatMap((d): SunEvent[] => [
+        { time: new Date(d.sunrise), kind: "sunrise" },
+        { time: new Date(d.sunset), kind: "sunset" },
+      ])
+      .filter((e) => e.time.getUTCFullYear() > 1), // no sunrise (polar day): the zero time
+  );
+</script>
+
+<section aria-labelledby="hourly-title" class="panel py-4">
+  <h2 id="hourly-title" class="text-muted-foreground mb-2 px-5 text-xs font-medium tracking-wider uppercase">Idućih 24 sata</h2>
+  <!-- The strip scrolls, so it takes focus for the keyboard; the chart is drawn for the eye, and the
+       table below says the same to screen readers. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div tabindex="0" role="region" aria-label="Prognoza po satima" class="scrollbar-thin overflow-x-auto px-2">
+    <div aria-hidden="true"><HourlyChart {hours} {timeZone} {sunEvents} /></div>
+  </div>
+  <table class="sr-only">
+    <caption>Prognoza po satima</caption>
+    <thead>
+      <tr><th scope="col">Sat</th><th scope="col">Vrijeme</th><th scope="col">Temperatura</th><th scope="col">Vjerojatnost oborine</th></tr>
+    </thead>
+    <tbody>
+      {#each hours as h (h.time)}
+        <tr>
+          <th scope="row">{formatHour(new Date(h.time), timeZone)}</th>
+          <td>{weatherInfo(h.weatherCode, h.isDay).label}</td>
+          <td>{formatDegrees(h.temperature)}</td>
+          <td>{formatPercent(h.precipitationProbability)}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</section>
