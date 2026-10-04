@@ -1,5 +1,6 @@
-/** Mirrors the backend's ForecastResponse (app/models/forecast.go). Times are ISO 8601 with the
- *  location's offset; dates are YYYY-MM-DD on the location's calendar. */
+/** Mirrors the backend's ForecastResponse (app/models/forecast.go). Times are ISO 8601 instants,
+ *  all carrying the offset in force when Open-Meteo was asked (even across a DST change), so show
+ *  them with Forecast.timezone, never by reading the offset; dates are YYYY-MM-DD. */
 export interface CurrentForecast {
   time: string;
   /** °C */

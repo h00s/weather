@@ -177,15 +177,17 @@ func TestNewForecastResponseToleratesShortSeries(t *testing.T) {
 	}
 }
 
-// Open-Meteo sends wall-clock times; goopenmeteo places them at the offset the
-// response had, so after the switch to CET (2026-10-25 03:00) every hour would
-// be an hour off unless it is placed in Europe/Zagreb itself.
-func TestNewForecastResponseUsesTheZonesOwnOffsetAcrossDST(t *testing.T) {
+// Open-Meteo labels the whole series with the offset in force when it was asked
+// (utc_offset_seconds), straight through a DST change: after 25 Oct, "05:00" at
+// GMT+2 is 03:00 UTC, which the CET clock reads as 04:00. goopenmeteo's fixed zone
+// already makes these the right instants; re-placing the labels in Europe/Zagreb
+// would shift every hour after the switch by one.
+func TestNewForecastResponseKeepsUpstreamInstantsAcrossDST(t *testing.T) {
 	start := time.Date(2026, 10, 24, 0, 0, 0, 0, zagreb)
 	f := &goopenmeteo.Forecast{
 		Timezone: "Europe/Zagreb",
 		Hourly: goopenmeteo.TimeseriesData{
-			Time: hours(start, 48), // wall clock 24 Oct 00:00 … 25 Oct 23:00, all labelled +02:00
+			Time: hours(start, 48), // labelled 24 Oct 00:00 … 25 Oct 23:00, all at GMT+2
 			Data: map[string][]float64{goopenmeteo.Temperature2M: seq(48, 0)},
 		},
 	}
@@ -193,13 +195,34 @@ func TestNewForecastResponseUsesTheZonesOwnOffsetAcrossDST(t *testing.T) {
 
 	res := NewForecastResponse(f, now, now)
 
-	for _, h := range res.Hourly {
-		wall := h.Time.Format("2006-01-02 15:04")
-		if wall == "2026-10-24 12:00" && !h.Time.Equal(time.Date(2026, 10, 24, 10, 0, 0, 0, time.UTC)) {
-			t.Errorf("24 Oct 12:00 = %v, want 10:00 UTC (CEST)", h.Time.UTC())
-		}
-		if wall == "2026-10-25 04:00" && !h.Time.Equal(time.Date(2026, 10, 25, 3, 0, 0, 0, time.UTC)) {
-			t.Errorf("25 Oct 04:00 = %v, want 03:00 UTC (CET)", h.Time.UTC())
+	want := time.Date(2026, 10, 25, 3, 0, 0, 0, time.UTC) // the hour labelled "2026-10-25T05:00"
+	if got := res.Hourly[29].Time; !got.Equal(want) {
+		t.Errorf("hour labelled 25 Oct 05:00 = %v, want %v", got.UTC(), want)
+	}
+}
+
+// Every hour is a distinct, later instant, even across the switch to CEST, when
+// 28 Mar 2027 02:00 does not exist on the local clock: the frontend keys its
+// lists on the time, and a repeated one stops the page from rendering.
+func TestNewForecastResponseHoursStrictlyIncreaseAcrossDST(t *testing.T) {
+	cet := time.FixedZone("GMT+1", 3600)
+	start := time.Date(2027, 3, 27, 0, 0, 0, 0, cet)
+	f := &goopenmeteo.Forecast{
+		Timezone: "Europe/Zagreb",
+		Hourly: goopenmeteo.TimeseriesData{
+			Time: hours(start, 48), // labelled 27 Mar 00:00 … 28 Mar 23:00, all at GMT+1
+			Data: map[string][]float64{goopenmeteo.Temperature2M: seq(48, 0)},
+		},
+	}
+
+	res := NewForecastResponse(f, start, start)
+
+	if len(res.Hourly) != 48 {
+		t.Fatalf("got %d hours, want 48", len(res.Hourly))
+	}
+	for i := 1; i < len(res.Hourly); i++ {
+		if !res.Hourly[i].Time.After(res.Hourly[i-1].Time) {
+			t.Fatalf("hour %d (%v) is not after hour %d (%v)", i, res.Hourly[i].Time.UTC(), i-1, res.Hourly[i-1].Time.UTC())
 		}
 	}
 }

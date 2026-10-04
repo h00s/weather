@@ -3,7 +3,6 @@ package main
 import (
 	"log/slog"
 	"os"
-	_ "time/tzdata" // forecasts are placed in their IANA zone wherever the binary runs
 
 	"github.com/go-raptor/raptor/v4"
 	"github.com/h00s/weather/config"

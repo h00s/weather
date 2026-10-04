@@ -110,16 +110,15 @@ type DailyForecastResponse struct {
 }
 
 // NewForecastResponse maps a forecast to the response: hourly from the hour
-// containing now, daily from today. Times are placed in the location's own
-// zone, so they keep the right offset across a DST change within the week:
-// Open-Meteo sends wall-clock times, and goopenmeteo can only give them the
-// response's current offset.
+// containing now, daily from today. Times stay the instants goopenmeteo decoded:
+// Open-Meteo labels the whole series with the offset in force when it was asked,
+// even across a DST change, and goopenmeteo places the labels at that offset. The
+// frontend shows them on the location's clock (Timezone).
 func NewForecastResponse(f *goopenmeteo.Forecast, now, fetchedAt time.Time) ForecastResponse {
-	zone := zoneOf(f)
 	cur := f.Current.Data
 	res := ForecastResponse{
 		Current: CurrentForecastResponse{
-			Time:                zone(f.Current.Time),
+			Time:                f.Current.Time,
 			Temperature:         cur[goopenmeteo.Temperature2M],
 			ApparentTemperature: cur[goopenmeteo.ApparentTemperature],
 			Humidity:            cur[goopenmeteo.RelativeHumidity2M],
@@ -144,7 +143,6 @@ func NewForecastResponse(f *goopenmeteo.Forecast, now, fetchedAt time.Time) Fore
 
 	hourly := f.Hourly.Data
 	for i, t := range f.Hourly.Time {
-		t = zone(t)
 		if !t.Add(time.Hour).After(now) { // this hour is already over
 			continue
 		}
@@ -166,7 +164,6 @@ func NewForecastResponse(f *goopenmeteo.Forecast, now, fetchedAt time.Time) Fore
 		if len(res.Daily) == ForecastDays {
 			break
 		}
-		t = zone(t)
 		if !t.AddDate(0, 0, 1).After(now) { // this day is already over
 			continue
 		}
@@ -181,28 +178,13 @@ func NewForecastResponse(f *goopenmeteo.Forecast, now, fetchedAt time.Time) Fore
 			WindGustsMax:                at(daily[goopenmeteo.WindGusts10MMax], i),
 			WindDirectionDominant:       at(daily[goopenmeteo.WindDirection10MDominant], i),
 			UVIndexMax:                  at(daily[goopenmeteo.UVIndexMax], i),
-			Sunrise:                     zone(at(times[goopenmeteo.Sunrise], i)),
-			Sunset:                      zone(at(times[goopenmeteo.Sunset], i)),
+			Sunrise:                     at(times[goopenmeteo.Sunrise], i),
+			Sunset:                      at(times[goopenmeteo.Sunset], i),
 			DaylightSeconds:             at(daily[goopenmeteo.DaylightDuration], i),
 		})
 	}
 
 	return res
-}
-
-// zoneOf re-places wall-clock times in the forecast's IANA zone. With no zone
-// (a GMT forecast) or an unknown one, times stay as decoded.
-func zoneOf(f *goopenmeteo.Forecast) func(time.Time) time.Time {
-	loc, err := time.LoadLocation(f.Timezone)
-	if f.Timezone == "" || err != nil {
-		return func(t time.Time) time.Time { return t }
-	}
-	return func(t time.Time) time.Time {
-		if t.IsZero() {
-			return t
-		}
-		return time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), loc)
-	}
 }
 
 // at returns series[i], or the zero value when the series is shorter than the
