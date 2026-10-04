@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+// failureBackoff is how long a failed upstream is left alone: callers meanwhile get
+// the last good value (or the error) at once, rather than queuing for another try.
+const failureBackoff = 30 * time.Second
+
 // staleCache holds one upstream value for ttl. When a refresh fails it keeps
 // serving the last good value, so the display shows slightly old data instead
 // of none; it returns the error only while nothing has been fetched yet.
@@ -16,6 +20,8 @@ type staleCache[T any] struct {
 	mu        sync.Mutex
 	value     T
 	fetchedAt time.Time
+	failedAt  time.Time // the last failed refresh; zero after a success
+	failure   error
 }
 
 func newStaleCache[T any](ttl time.Duration) *staleCache[T] {
@@ -24,7 +30,8 @@ func newStaleCache[T any](ttl time.Duration) *staleCache[T] {
 
 // Get returns the cached value and when it was fetched, calling fetch when the
 // value is older than ttl. The lock is held across fetch, so concurrent callers
-// share one upstream request.
+// share one upstream request; after a failure, callers within failureBackoff
+// share its outcome too.
 func (c *staleCache[T]) Get(ctx context.Context, fetch func(context.Context) (T, error)) (T, time.Time, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -32,17 +39,28 @@ func (c *staleCache[T]) Get(ctx context.Context, fetch func(context.Context) (T,
 	if !c.fetchedAt.IsZero() && c.now().Sub(c.fetchedAt) < c.ttl {
 		return c.value, c.fetchedAt, nil
 	}
+	if !c.failedAt.IsZero() && c.now().Sub(c.failedAt) < failureBackoff {
+		return c.stale(c.failure)
+	}
 
 	value, err := fetch(ctx)
 	if err != nil {
-		if c.fetchedAt.IsZero() {
-			var zero T
-			return zero, time.Time{}, err
+		if ctx.Err() == nil { // a caller that gave up is no verdict on the upstream
+			c.failedAt, c.failure = c.now(), err
 		}
-		return c.value, c.fetchedAt, nil
+		return c.stale(err)
 	}
 
-	c.value, c.fetchedAt = value, c.now()
+	c.value, c.fetchedAt, c.failedAt, c.failure = value, c.now(), time.Time{}, nil
+	return c.value, c.fetchedAt, nil
+}
+
+// stale is the last good value, or err when there is none.
+func (c *staleCache[T]) stale(err error) (T, time.Time, error) {
+	if c.fetchedAt.IsZero() {
+		var zero T
+		return zero, time.Time{}, err
+	}
 	return c.value, c.fetchedAt, nil
 }
 
