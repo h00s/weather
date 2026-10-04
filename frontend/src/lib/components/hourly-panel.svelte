@@ -24,20 +24,24 @@
   <ScrollStrip label="Prognoza po satima" class="px-2">
     <div aria-hidden="true" class="w-max"><HourlyChart {hours} {timeZone} {sunEvents} /></div>
   </ScrollStrip>
-  <table class="sr-only">
-    <caption>Prognoza po satima</caption>
-    <thead>
-      <tr><th scope="col">Sat</th><th scope="col">Vrijeme</th><th scope="col">Temperatura</th><th scope="col">Vjerojatnost oborine</th></tr>
-    </thead>
-    <tbody>
-      {#each hours as h (h.time)}
-        <tr>
-          <th scope="row">{formatHour(new Date(h.time), timeZone)}</th>
-          <td>{weatherInfo(h.weatherCode, h.isDay).label}</td>
-          <td>{formatDegrees(h.temperature)}</td>
-          <td>{formatPercent(h.precipitationProbability)}</td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+  <!-- sr-only goes on a wrapper: a table ignores the 1 px box and the clipping, and would stretch the
+       page (sideways on a phone, past the end on a desktop). -->
+  <div class="sr-only">
+    <table>
+      <caption>Prognoza po satima</caption>
+      <thead>
+        <tr><th scope="col">Sat</th><th scope="col">Vrijeme</th><th scope="col">Temperatura</th><th scope="col">Vjerojatnost oborine</th></tr>
+      </thead>
+      <tbody>
+        {#each hours as h (h.time)}
+          <tr>
+            <th scope="row">{formatHour(new Date(h.time), timeZone)}</th>
+            <td>{weatherInfo(h.weatherCode, h.isDay).label}</td>
+            <td>{formatDegrees(h.temperature)}</td>
+            <td>{formatPercent(h.precipitationProbability)}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
 </section>
