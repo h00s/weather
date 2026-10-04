@@ -1,17 +1,3 @@
-<script lang="ts">
-  import Container from "$comp/layouts/Container.svelte";
-  import CurrentForecast from "$comp/app/CurrentForecast.svelte";
-  import HourlyForecast from "$comp/app/HourlyForecast.svelte";
-  import DailyForecast from "$comp/app/DailyForecast.svelte";
-  import type { PageData } from "./$types";
+<svelte:head><title>Vrijeme</title></svelte:head>
 
-  const { data }: { data: PageData } = $props<{ data: PageData }>();
-</script>
-
-<Container>
-  <CurrentForecast city="Daruvar" data={data.forecast.current} />
-  <div class="border-t border-white/10 my-5"></div>
-  <HourlyForecast data={data.forecast.hourly} />
-  <div class="border-t border-white/10 my-5"></div>
-  <DailyForecast data={data.forecast.daily} />
-</Container>
+<main class="grid min-h-dvh place-items-center text-3xl font-extralight">Vrijeme</main>

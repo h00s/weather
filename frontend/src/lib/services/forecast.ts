@@ -1,22 +1,6 @@
-import { PUBLIC_API_URL } from '$env/static/public';
-import type { Forecast } from '$type/Forecast';
+import { api } from "$lib/api/client";
+import type { Forecast } from "$lib/types/forecast";
+import type { Coordinates } from "$lib/types/location";
 
-type FetchFunction = typeof fetch;
-
-export async function fetchForecast(
-  svelteFetch: FetchFunction = fetch,
-  lat = 45.5936,
-  lon = 17.2251
-): Promise<Forecast> {
-  const url = new URL(`${PUBLIC_API_URL}/forecast`);
-  url.searchParams.append('lat', lat.toString());
-  url.searchParams.append('lon', lon.toString());
-  
-  const response = await svelteFetch(url.toString());
-  
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
-  
-  return response.json();
-}
+export const fetchForecast = (at: Coordinates, signal?: AbortSignal, fetch?: typeof globalThis.fetch) =>
+  api.get<Forecast>("/forecast", { query: { lat: at.latitude, lon: at.longitude }, signal, fetch });

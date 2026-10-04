@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* The brand navy: the night sky, the PWA splash, and what shows before the sky is computed. */
+  --color-navy: #012a4a;
+  --color-foreground: oklch(0.985 0 0);
+  --color-muted-foreground: oklch(0.985 0 0 / 75%);
+
+  /* Frosted panels over the sky */
+  --color-panel: oklch(0.22 0.05 248 / 35%);
+  --color-panel-edge: oklch(1 0 0 / 10%);
+  /* The location sheet sits above everything, so it is nearly opaque. */
+  --color-sheet: oklch(0.25 0.06 248 / 97%);
+
+  /* Data marks */
+  --color-rain: oklch(0.82 0.1 230);
+
+  /* Warning levels: always shown with an icon and text */
+  --color-warn-yellow: oklch(0.88 0.16 95);
+  --color-warn-orange: oklch(0.77 0.16 60);
+  --color-warn-red: oklch(0.6 0.21 27);
+}
+
+/* Registered so the sky's colours can transition; a gradient itself can't. */
+@property --sky-top {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #012a4a;
+}
+@property --sky-bottom {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #012a4a;
+}
+
+@utility panel {
+  border-radius: var(--radius-3xl);
+  background-color: var(--color-panel);
+  box-shadow: inset 0 0 0 1px var(--color-panel-edge);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Keeps white text crisp against the sky: a tight shadow for the edges, a soft one for the glow. */
+@utility text-lift {
+  text-shadow:
+    0 1px 2px oklch(0 0 0 / 40%),
+    0 2px 18px oklch(0 0 0 / 30%);
+}
+
+/* Horizontal strips: a thin, quiet scrollbar where the platform shows one. */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(1 0 0 / 25%) transparent;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    background-color: var(--color-navy);
+    /* The page's own pull-to-refresh replaces the browser's reload-on-pull. */
+    overscroll-behavior-y: contain;
+  }
+
+  body {
+    @apply text-foreground font-sans antialiased;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+}
