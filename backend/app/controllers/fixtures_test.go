@@ -12,6 +12,8 @@ func canned(path string, now time.Time) (body []byte, ok bool) {
 	switch path {
 	case "/forecast":
 		return forecastJSON(now), true
+	case "/search":
+		return []byte(searchJSON), true
 	}
 	return nil, false
 }
@@ -56,3 +58,10 @@ func forecastJSON(now time.Time) []byte {
 	})
 	return body
 }
+
+// searchJSON is Open-Meteo's geocoding answer for "Daru": two settlements and an airfield.
+const searchJSON = `{"results":[
+ {"id":3202184,"name":"Daruvar","latitude":45.59056,"longitude":17.225,"feature_code":"PPLA2","country_code":"HR","admin1":"Bjelovarsko-bilogorska županija"},
+ {"id":11500092,"name":"Daruvar","latitude":45.58507,"longitude":17.2114,"feature_code":"AIRF","country_code":"HR","admin1":"Bjelovarsko-bilogorska županija"},
+ {"id":12509853,"name":"Daruvarski Vinogradi","latitude":45.60251,"longitude":17.25084,"feature_code":"PPL","country_code":"HR","admin1":"Bjelovarsko-bilogorska županija"}
+],"generationtime_ms":0.3}`
