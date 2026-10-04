@@ -40,7 +40,8 @@ type MeteoalarmInfo struct {
 	Area []struct {
 		AreaDesc string `json:"areaDesc"`
 		Geocode  []struct {
-			Value string `json:"value"`
+			ValueName string `json:"valueName"` // EMMA_ID or NUTS3
+			Value     string `json:"value"`
 		} `json:"geocode"`
 	} `json:"area"`
 }
@@ -137,6 +138,10 @@ func croatian(infos []MeteoalarmInfo) *MeteoalarmInfo {
 	return nil
 }
 
+// covers reports whether the info's area is one of areas, by its areaDesc or its
+// NUTS3 code. EMMA_IDs are ignored: they share the HR0xx space with NUTS3 codes
+// (Splitsko-dalmatinska's EMMA_ID HR027 is Karlovačka's NUTS3), so matching them
+// put coastal warnings on inland counties.
 func (info *MeteoalarmInfo) covers(areas []string) bool {
 	for _, a := range info.Area {
 		for _, area := range areas {
@@ -144,7 +149,7 @@ func (info *MeteoalarmInfo) covers(areas []string) bool {
 				return true
 			}
 			for _, g := range a.Geocode {
-				if strings.EqualFold(g.Value, area) {
+				if g.ValueName == "NUTS3" && strings.EqualFold(g.Value, area) {
 					return true
 				}
 			}

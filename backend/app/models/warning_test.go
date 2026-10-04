@@ -49,13 +49,17 @@ func TestActiveWarningsKeepsCurrentAndUpcomingWarningsForTheArea(t *testing.T) {
 	}
 }
 
-func TestActiveWarningsMatchesAreaByNameOrGeocode(t *testing.T) {
+func TestActiveWarningsMatchesAreaByNameOrNUTS3(t *testing.T) {
 	alerts := []MeteoalarmAlert{alert("a", "Alert", "Bjelovarsko-bilogorska", "2; yellow; Moderate", "1; Wind", warnNow, warnNow.Add(time.Hour), "")}
 
-	for _, area := range []string{"bjelovarsko-bilogorska", "HR021", "HR005"} {
+	for _, area := range []string{"bjelovarsko-bilogorska", "HR021"} {
 		if got := ActiveWarnings(alerts, []string{area}, warnNow); len(got) != 1 {
 			t.Errorf("area %q matched %d warnings, want 1", area, len(got))
 		}
+	}
+	// The alert's EMMA_ID (HR005) collides with NUTS3 codes elsewhere, so it never matches.
+	if got := ActiveWarnings(alerts, []string{"HR005"}, warnNow); len(got) != 0 {
+		t.Errorf("EMMA_ID HR005 matched %d warnings, want 0", len(got))
 	}
 	if got := ActiveWarnings(alerts, []string{"Zadarska"}, warnNow); len(got) != 0 {
 		t.Errorf("another area matched %d warnings, want 0", len(got))
@@ -147,5 +151,36 @@ func TestActiveWarningsMatchesAnyOfACountysAreas(t *testing.T) {
 	}
 	if got := ActiveWarnings(alerts, Counties["19"].Areas, warnNow); len(got) != 0 {
 		t.Errorf("Zadarska matched %d warnings, want 0", len(got))
+	}
+}
+
+// Meteoalarm's EMMA_IDs share the HR0xx space with NUTS3 codes: Splitsko-dalmatinska
+// is EMMA_ID HR027, which is Karlovačka's NUTS3; Zadarska's HR023 is Požeško-slavonska's
+// and Šibensko-kninska's HR025 is Osječko-baranjska's. The recorded feed's coastal
+// warnings must not reach those inland counties.
+func TestActiveWarningsKeepsCoastalWarningsOffInlandCounties(t *testing.T) {
+	raw, err := os.ReadFile("testdata/meteoalarm-croatia.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var feed MeteoalarmFeed
+	if err := json.Unmarshal(raw, &feed); err != nil {
+		t.Fatal(err)
+	}
+	alerts := make([]MeteoalarmAlert, len(feed.Warnings))
+	for i, w := range feed.Warnings {
+		alerts[i] = w.Alert
+	}
+
+	for _, now := range []time.Time{time.Date(2026, 9, 24, 23, 0, 0, 0, zagreb), time.Date(2026, 9, 25, 10, 0, 0, 0, zagreb)} {
+		for _, code := range []string{"05", "10", "11"} {
+			if got := ActiveWarnings(alerts, Counties[code].Areas, now); len(got) != 0 {
+				t.Errorf("%v: %s got %d coastal warnings: %+v", now, Counties[code].Name, len(got), got)
+			}
+		}
+	}
+	// The coast itself still gets them.
+	if got := ActiveWarnings(alerts, Counties["19"].Areas, time.Date(2026, 9, 25, 10, 0, 0, 0, zagreb)); len(got) == 0 {
+		t.Error("Zadarska lost its own warning")
 	}
 }
