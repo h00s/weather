@@ -22,7 +22,9 @@ A Go/[Raptor](https://github.com/go-raptor/raptor) backend serves the JSON API a
 | `GET /api/v1/places/nearest?lat&lon` | The settlement at a point, from the embedded GeoNames dataset (404 abroad) |
 | `GET /healthz`, `GET /readyz` | Liveness and readiness probes |
 
-Each upstream is served stale while it fails. The API is limited to 20 requests a second per client IP.
+Each upstream is served stale while it fails, and a failing upstream is left alone for 30 s. Each client IP gets a burst of 30 API requests, then 2 a second. All clients together share one budget of Open-Meteo calls (`APP_OPENMETEO_PER_MINUTE`, default 120; the free tier allows 600 a minute). Once it is spent, uncached locations answer 502 until the next minute.
+
+Open-Meteo's free tier is for non-commercial use and allows 10,000 calls a day. The budget does not enforce the daily quota: watch traffic, and move to a paid plan if the site outgrows it.
 
 ## Configure
 

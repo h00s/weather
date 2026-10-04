@@ -22,6 +22,8 @@ const (
 type ForecastService struct {
 	raptor.Service
 
+	Upstream *UpstreamService
+
 	client *goopenmeteo.OpenMeteo
 	cache  *keyedCache[string, *goopenmeteo.Forecast]
 }
@@ -39,6 +41,9 @@ func (s *ForecastService) Setup() error {
 func (s *ForecastService) Forecast(ctx context.Context, at models.Coordinates) (*goopenmeteo.Forecast, time.Time, error) {
 	at = at.Rounded()
 	return s.cache.Get(ctx, at.Key(), func(ctx context.Context) (*goopenmeteo.Forecast, error) {
+		if err := s.Upstream.Take(); err != nil {
+			return nil, err
+		}
 		forecast, err := s.client.ForecastContext(ctx, goopenmeteo.ForecastOptions{
 			Latitude:     at.Latitude,
 			Longitude:    at.Longitude,

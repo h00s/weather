@@ -92,21 +92,21 @@ func TestCrossSiteWriteIsRejected(t *testing.T) {
 	}
 }
 
-// One client gets at most 20 API requests a second (burst 20), so nobody can
-// drain the upstream quotas; another client is unaffected, and probes are never limited.
+// One client gets a burst of 30 API requests, then 2 a second, so no script can
+// churn through cells; another client is unaffected, and probes are never limited.
 func TestAPIIsRateLimitedPerClient(t *testing.T) {
 	app, _ := newApp(t)
 	client := newClient()
 
 	limited := false
-	for range 30 {
+	for range 40 {
 		if app.TestGet("/api/v1/forecast", client).Code == http.StatusTooManyRequests {
 			limited = true
 			break
 		}
 	}
 	if !limited {
-		t.Fatal("30 requests in a burst were never limited")
+		t.Fatal("40 requests in a burst were never limited")
 	}
 	if rec := app.TestGet("/api/v1/forecast", newClient()); rec.Code == http.StatusTooManyRequests {
 		t.Error("another client was limited too")
@@ -115,5 +115,20 @@ func TestAPIIsRateLimitedPerClient(t *testing.T) {
 		if rec := app.TestGet("/healthz", client); rec.Code != http.StatusOK {
 			t.Fatalf("GET /healthz = %d: probes must not be rate limited", rec.Code)
 		}
+	}
+}
+
+// All clients share one Open-Meteo budget (openmeteo_per_minute), so no client,
+// however many addresses it uses, can trip the upstream's own limit and leave
+// every uncached location failing. Cached cells keep answering.
+func TestOpenMeteoCallsShareOneBudget(t *testing.T) {
+	app, u := newAppWithConfig(t, map[string]string{"openmeteo_per_minute": "1"})
+
+	raptor.DecodeJSON[map[string]any](t, app.TestGet("/api/v1/forecast?lat=45.59&lon=17.22", newClient()), http.StatusOK)
+	raptor.DecodeJSON[errorBody](t, app.TestGet("/api/v1/forecast?lat=43.51&lon=16.44", newClient()), http.StatusBadGateway)
+	raptor.DecodeJSON[map[string]any](t, app.TestGet("/api/v1/forecast?lat=45.59&lon=17.22", newClient()), http.StatusOK)
+
+	if n := u.hits("/forecast"); n != 1 {
+		t.Errorf("Open-Meteo was asked %d times, want 1 (the budget)", n)
 	}
 }

@@ -2,6 +2,7 @@ package controllers_test
 
 import (
 	"fmt"
+	"maps"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -30,6 +31,12 @@ type upstreams struct {
 
 func newApp(t *testing.T) (*raptor.Raptor, *upstreams) {
 	t.Helper()
+	return newAppWithConfig(t, nil)
+}
+
+// newAppWithConfig is newApp with extra app config, such as a smaller upstream budget.
+func newAppWithConfig(t *testing.T, extra map[string]string) (*raptor.Raptor, *upstreams) {
+	t.Helper()
 	u := &upstreams{counts: map[string]int{}, queries: map[string]url.Values{}}
 	u.srv = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		u.mu.Lock()
@@ -51,14 +58,14 @@ func newApp(t *testing.T) (*raptor.Raptor, *upstreams) {
 	}))
 	t.Cleanup(u.srv.Close)
 
-	app := raptor.NewTestApp(components.New(), config.Routes(), raptor.WithConfig(&rconfig.Config{
-		AppConfig: map[string]string{
-			"openmeteo_url":  u.srv.URL,
-			"airquality_url": u.srv.URL,
-			"geocoding_url":  u.srv.URL,
-			"meteoalarm_url": u.srv.URL,
-		},
-	}))
+	appConfig := map[string]string{
+		"openmeteo_url":  u.srv.URL,
+		"airquality_url": u.srv.URL,
+		"geocoding_url":  u.srv.URL,
+		"meteoalarm_url": u.srv.URL,
+	}
+	maps.Copy(appConfig, extra)
+	app := raptor.NewTestApp(components.New(), config.Routes(), raptor.WithConfig(&rconfig.Config{AppConfig: appConfig}))
 	return app, u
 }
 

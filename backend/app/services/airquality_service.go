@@ -17,6 +17,8 @@ const airQualityTTL = 30 * time.Minute
 type AirQualityService struct {
 	raptor.Service
 
+	Upstream *UpstreamService
+
 	client *goopenmeteo.OpenMeteo
 	cache  *keyedCache[string, *goopenmeteo.AirQuality]
 }
@@ -34,6 +36,9 @@ func (s *AirQualityService) Setup() error {
 func (s *AirQualityService) AirQuality(ctx context.Context, at models.Coordinates) (*goopenmeteo.AirQuality, time.Time, error) {
 	at = at.Rounded()
 	return s.cache.Get(ctx, at.Key(), func(ctx context.Context) (*goopenmeteo.AirQuality, error) {
+		if err := s.Upstream.Take(); err != nil {
+			return nil, err
+		}
 		vars := models.AirQualityVariables()
 		aq, err := s.client.AirQualityContext(ctx, goopenmeteo.AirQualityOptions{
 			Latitude:     at.Latitude,

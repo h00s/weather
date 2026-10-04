@@ -32,6 +32,8 @@ const (
 type PlacesService struct {
 	raptor.Service
 
+	Upstream *UpstreamService
+
 	places   []models.Place
 	client   *http.Client
 	baseURL  string
@@ -71,6 +73,9 @@ func (s *PlacesService) Search(ctx context.Context, query string) ([]models.Plac
 }
 
 func (s *PlacesService) geocode(ctx context.Context, query string) ([]models.PlaceResponse, error) {
+	if err := s.Upstream.Take(); err != nil {
+		return nil, err
+	}
 	params := url.Values{
 		"name":        {query},
 		"count":       {"20"}, // the filter drops airfields, stations and other features

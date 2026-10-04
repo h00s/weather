@@ -14,11 +14,11 @@ require (
 	github.com/go-raptor/raptor/v4 v4.6.1
 	github.com/h00s/goopenmeteo v1.1.0
 	github.com/lmittmann/tint v1.2.0
+	golang.org/x/time v0.16.0
 )
 
 require (
 	github.com/andybalholm/brotli v1.2.2 // indirect
 	github.com/go-raptor/connectors v1.1.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/time v0.16.0 // indirect
 )

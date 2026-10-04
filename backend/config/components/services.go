@@ -7,6 +7,7 @@ import (
 
 func Services() raptor.Services {
 	return raptor.Services{
+		&services.UpstreamService{},
 		&services.ForecastService{},
 		&services.PlacesService{},
 		&services.WarningsService{},
