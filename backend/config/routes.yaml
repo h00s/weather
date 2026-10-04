@@ -5,7 +5,7 @@ routes:
     GET: Health.Ready           # built in: 503 from the moment shutdown begins
   /api/v1:
     /forecast:
-      GET: Forecast.Get
+      GET: Forecast.Show        # ?lat&lon: now, hourly to the end of the week, 7 days
     /{path...}: Errors.NotFound # unknown API paths answer a JSON 404, not the SPA's empty one
 
   /: SPA.Index                  # catch-all for the frontend

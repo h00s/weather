@@ -1,44 +1,56 @@
 package services
 
 import (
+	"context"
+	"time"
+
 	"github.com/go-raptor/raptor/v4"
 	"github.com/h00s/goopenmeteo"
+	"github.com/h00s/weather/app/models"
 )
 
+const (
+	// forecastTTL keeps "now" current without asking Open-Meteo twice in a few
+	// minutes for the same square kilometre.
+	forecastTTL = 10 * time.Minute
+	// maxCachedLocations bounds every per-location cache (cells of ~1 km).
+	maxCachedLocations = 5000
+)
+
+// ForecastService fetches forecasts from Open-Meteo, cached per ~1 km cell.
+// APP_OPENMETEO_URL overrides the API root (tests).
 type ForecastService struct {
 	raptor.Service
 
-	OpenMeteo *goopenmeteo.OpenMeteo
+	client *goopenmeteo.OpenMeteo
+	cache  *keyedCache[string, *goopenmeteo.Forecast]
 }
 
-func (fs *ForecastService) Setup() error {
-	fs.OpenMeteo = goopenmeteo.NewOpenMeteo()
+func (s *ForecastService) Setup() error {
+	s.client = goopenmeteo.NewOpenMeteo()
+	s.client.BaseURL = s.Config.AppString("openmeteo_url", goopenmeteo.BaseURL)
+	s.cache = newKeyedCache[string, *goopenmeteo.Forecast](forecastTTL, maxCachedLocations)
 	return nil
 }
 
-func (fs *ForecastService) GetForecast(latitude, longitude float64) (*goopenmeteo.Forecast, error) {
-	return fs.OpenMeteo.Forecast(goopenmeteo.ForecastOptions{
-		Latitude:  latitude,
-		Longitude: longitude,
-		Current: goopenmeteo.WeatherVariables{
-			goopenmeteo.Temperature2M,
-			goopenmeteo.RelativeHumidity2M,
-			goopenmeteo.Precipitation,
-			goopenmeteo.WeatherCode,
-		},
-		ForecastDays: 7,
-		Daily: goopenmeteo.WeatherVariables{
-			goopenmeteo.Temperature2MMax,
-			goopenmeteo.Temperature2MMin,
-			goopenmeteo.PrecipitationSum,
-			goopenmeteo.WeatherCode,
-		},
-		ForecastHours: 24,
-		Hourly: goopenmeteo.WeatherVariables{
-			goopenmeteo.Temperature2M,
-			goopenmeteo.RelativeHumidity2M,
-			goopenmeteo.Precipitation,
-			goopenmeteo.WeatherCode,
-		},
+// Forecast returns the forecast for at's cell and when it was fetched. When
+// Open-Meteo fails it returns the last forecast it has for the cell; it errors
+// only when it has none.
+func (s *ForecastService) Forecast(ctx context.Context, at models.Coordinates) (*goopenmeteo.Forecast, time.Time, error) {
+	at = at.Rounded()
+	return s.cache.Get(ctx, at.Key(), func(ctx context.Context) (*goopenmeteo.Forecast, error) {
+		forecast, err := s.client.ForecastContext(ctx, goopenmeteo.ForecastOptions{
+			Latitude:     at.Latitude,
+			Longitude:    at.Longitude,
+			Timezone:     "auto", // the location's own zone
+			Current:      models.ForecastCurrentVariables,
+			Hourly:       models.ForecastHourlyVariables,
+			Daily:        models.ForecastDailyVariables,
+			ForecastDays: models.ForecastDays,
+		})
+		if err != nil {
+			s.Log.Warn("Open-Meteo forecast request failed", "cell", at.Key(), "error", err)
+		}
+		return forecast, err
 	})
 }

@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"strconv"
+	"time"
 
 	"github.com/go-raptor/raptor/v4"
 	"github.com/go-raptor/raptor/v4/errs"
+	"github.com/h00s/weather/app/models"
 	"github.com/h00s/weather/app/services"
 )
 
@@ -14,28 +15,16 @@ type ForecastController struct {
 	Forecast *services.ForecastService
 }
 
-func (fc *ForecastController) Get(c *raptor.Context) error {
-	lat := c.QueryParam("lat")
-	lon := c.QueryParam("lon")
-
-	if lat == "" || lon == "" {
-		return errs.NewErrorBadRequest("Lat and Lon query parameters are required")
-	}
-
-	latitude, err := strconv.ParseFloat(lat, 64)
+// Show is the forecast at ?lat&lon: now, every hour to the end of the week, and
+// seven days from today.
+func (c *ForecastController) Show(ctx *raptor.Context) error {
+	at, err := coordinates(ctx)
 	if err != nil {
-		return errs.NewErrorBadRequest("Invalid lat parameter")
+		return err
 	}
-
-	longitude, err := strconv.ParseFloat(lon, 64)
+	forecast, fetchedAt, err := c.Forecast.Forecast(ctx.Request().Context(), at)
 	if err != nil {
-		return errs.NewErrorBadRequest("Invalid lon parameter")
+		return errs.NewErrorBadGateway("Open-Meteo is unavailable")
 	}
-
-	forecast, err := fc.Forecast.GetForecast(latitude, longitude)
-	if err != nil {
-		return errs.NewErrorBadRequest(err.Error())
-	}
-
-	return c.Data(forecast)
+	return ctx.Data(models.NewForecastResponse(forecast, time.Now(), fetchedAt))
 }
