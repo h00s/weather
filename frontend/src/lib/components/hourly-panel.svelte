@@ -3,6 +3,7 @@
   import { weatherInfo } from "$lib/helpers/weather";
   import type { DailyForecast, HourlyForecast } from "$lib/types/forecast";
   import HourlyChart, { type SunEvent } from "./hourly-chart.svelte";
+  import ScrollStrip from "./scroll-strip.svelte";
 
   type Props = { hours: HourlyForecast[]; days: DailyForecast[]; timeZone: string };
   let { hours, days, timeZone }: Props = $props();
@@ -19,12 +20,10 @@
 
 <section aria-labelledby="hourly-title" class="panel py-4">
   <h2 id="hourly-title" class="text-muted-foreground mb-2 px-5 text-xs font-medium tracking-wider uppercase">Idućih 24 sata</h2>
-  <!-- The strip scrolls, so it takes focus for the keyboard; the chart is drawn for the eye, and the
-       table below says the same to screen readers. -->
-  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-  <div tabindex="0" role="region" aria-label="Prognoza po satima" class="scrollbar-thin overflow-x-auto px-2">
-    <div aria-hidden="true"><HourlyChart {hours} {timeZone} {sunEvents} /></div>
-  </div>
+  <!-- The chart is drawn for the eye; the table below says the same to screen readers. -->
+  <ScrollStrip label="Prognoza po satima" class="px-2">
+    <div aria-hidden="true" class="w-max"><HourlyChart {hours} {timeZone} {sunEvents} /></div>
+  </ScrollStrip>
   <table class="sr-only">
     <caption>Prognoza po satima</caption>
     <thead>

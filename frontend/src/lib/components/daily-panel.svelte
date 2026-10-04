@@ -17,12 +17,14 @@
 
 <section aria-labelledby="daily-title" class="panel px-3 py-4 sm:px-4">
   <h2 id="daily-title" class="text-muted-foreground mb-1 px-2 text-xs font-medium tracking-wider uppercase">7 dana</h2>
-  <ul>
+  <!-- Spacing instead of divider lines, which clashed with the rounded highlight; an opened day is
+       one tinted block, so its details clearly belong to it. -->
+  <ul class="flex flex-col gap-1">
     {#each forecast.daily as day (day.date)}
       {@const label = dayLabel(day.date, now, forecast.timezone)}
       {@const info = weatherInfo(day.weatherCode)}
-      <li class="border-t border-white/8 first:border-t-0">
-        <details class="group">
+      <li>
+        <details class="group rounded-xl open:bg-white/6">
           <summary class="flex cursor-pointer list-none items-center gap-2 rounded-xl px-2 py-2 hover:bg-white/8 sm:gap-3 [&::-webkit-details-marker]:hidden">
             <span class="w-14 shrink-0 leading-tight">
               <span class="block font-medium">{label.split(" ")[0]}</span>

@@ -13,6 +13,7 @@
   import { weatherInfo } from "$lib/helpers/weather";
   import { compassName } from "$lib/helpers/wind";
   import type { DailyForecast, HourlyForecast } from "$lib/types/forecast";
+  import ScrollStrip from "./scroll-strip.svelte";
   import WeatherIcon from "./weather-icon.svelte";
 
   type Props = { day: DailyForecast; hours: HourlyForecast[]; timeZone: string };
@@ -24,16 +25,18 @@
 
 <div class="px-2 pt-1 pb-3">
   {#if shown.length}
-    <ol class="scrollbar-thin flex gap-1 overflow-x-auto pb-2">
-      {#each shown as h (h.time)}
-        <li class="flex min-w-14 flex-col items-center rounded-xl bg-white/6 px-1 py-2 text-sm">
-          <span class="text-muted-foreground">{formatHour(new Date(h.time), timeZone)}</span>
-          <WeatherIcon name={weatherInfo(h.weatherCode, h.isDay).icon} size={32} />
-          <span class="font-medium">{formatDegrees(h.temperature)}</span>
-          {#if h.precipitationProbability >= 20}<span class="text-rain text-xs">{formatPercent(h.precipitationProbability)}</span>{/if}
-        </li>
-      {/each}
-    </ol>
+    <ScrollStrip label="Prognoza po satima za taj dan">
+      <ol class="flex w-max gap-1 pb-1">
+        {#each shown as h (h.time)}
+          <li class="flex min-w-14 flex-col items-center rounded-xl bg-white/6 px-1 py-2 text-sm">
+            <span class="text-muted-foreground">{formatHour(new Date(h.time), timeZone)}</span>
+            <WeatherIcon name={weatherInfo(h.weatherCode, h.isDay).icon} size={32} />
+            <span class="font-medium">{formatDegrees(h.temperature)}</span>
+            {#if h.precipitationProbability >= 20}<span class="text-rain text-xs">{formatPercent(h.precipitationProbability)}</span>{/if}
+          </li>
+        {/each}
+      </ol>
+    </ScrollStrip>
   {/if}
   <dl class="mt-2 grid grid-cols-1 gap-x-4 gap-y-1.5 text-sm sm:grid-cols-2">
     <div><dt class="text-muted-foreground inline">Oborine</dt> <dd class="inline">{formatMillimetres(day.precipitationSum)} · {formatPercent(day.precipitationProbabilityMax)}</dd></div>
