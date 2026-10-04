@@ -10,6 +10,8 @@ routes:
       GET: Places.Index         # ?q=: Croatian settlements by name, best match first
       /nearest:
         GET: Places.Nearest     # ?lat&lon: the Croatian settlement at a point (404 abroad)
+    /warnings:
+      GET: Warnings.Index       # ?lat&lon: DHMZ warnings for that county, now or within 48 h
     /{path...}: Errors.NotFound # unknown API paths answer a JSON 404, not the SPA's empty one
 
   /: SPA.Index                  # catch-all for the frontend

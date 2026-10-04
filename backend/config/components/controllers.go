@@ -10,6 +10,7 @@ func Controllers() raptor.Controllers {
 	return raptor.Controllers{
 		&controllers.ForecastController{},
 		&controllers.PlacesController{},
+		&controllers.WarningsController{},
 		&spa.SPAController{}, // serves public/; spa_optional in .raptor.dev.yaml and .raptor.test.yaml
 	}
 }

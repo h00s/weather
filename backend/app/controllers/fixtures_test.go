@@ -14,6 +14,8 @@ func canned(path string, now time.Time) (body []byte, ok bool) {
 		return forecastJSON(now), true
 	case "/search":
 		return []byte(searchJSON), true
+	case "/api/v1/warnings/feeds-croatia":
+		return meteoalarmJSON(now), true
 	}
 	return nil, false
 }
@@ -65,3 +67,28 @@ const searchJSON = `{"results":[
  {"id":11500092,"name":"Daruvar","latitude":45.58507,"longitude":17.2114,"feature_code":"AIRF","country_code":"HR","admin1":"Bjelovarsko-bilogorska županija"},
  {"id":12509853,"name":"Daruvarski Vinogradi","latitude":45.60251,"longitude":17.25084,"feature_code":"PPL","country_code":"HR","admin1":"Bjelovarsko-bilogorska županija"}
 ],"generationtime_ms":0.3}`
+
+// meteoalarmJSON is DHMZ's Meteoalarm feed with a yellow wind warning in force
+// for Bjelovarsko-bilogorska and an orange one for Zadarska.
+func meteoalarmJSON(now time.Time) []byte {
+	warning := func(id, area, level string) map[string]any {
+		return map[string]any{"alert": map[string]any{
+			"identifier": id, "msgType": "Alert",
+			"info": []map[string]any{{
+				"language": "hr-HR", "event": "Upozorenje", "description": "Opis",
+				"onset": now.Add(-time.Hour).Format(time.RFC3339), "expires": now.Add(5 * time.Hour).Format(time.RFC3339),
+				"responseType": []string{"Monitor"},
+				"parameter": []map[string]string{
+					{"valueName": "awareness_level", "value": level},
+					{"valueName": "awareness_type", "value": "1; Wind"},
+				},
+				"area": []map[string]any{{"areaDesc": area, "geocode": []map[string]string{{"valueName": "EMMA_ID", "value": "X"}}}},
+			}},
+		}}
+	}
+	body, _ := json.Marshal(map[string]any{"warnings": []any{
+		warning("here", "Bjelovarsko-bilogorska", "2; yellow; Moderate"),
+		warning("coast", "Zadarska", "3; orange; Severe"),
+	}})
+	return body
+}
