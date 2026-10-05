@@ -68,9 +68,12 @@
     return skyAt(now, rise, set, preview.cloud ?? forecast?.current.cloudCover ?? 0, info.precipitation);
   });
 
-  // The browser's own bars take the top of the sky.
+  // The browser's own bars take the top of the sky, and the page's root the bottom. On a phone the
+  // end of a fast fling (the overscroll stretch, the toolbar sliding away) briefly uncovers the root
+  // below the fixed sky: it matches the sky instead of flashing the brand navy.
   $effect(() => {
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", oklchToHex(sky.top));
+    document.documentElement.style.backgroundColor = oklchToHex(sky.bottom);
   });
 
   async function refresh() {
